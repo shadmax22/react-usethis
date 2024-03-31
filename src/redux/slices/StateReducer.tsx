@@ -31,15 +31,9 @@ export const StateReducer = createSlice({
 
       let { data, active_state } = action.payload;
 
-      let UPDATER = state[active_state];
+      let OLD_STATE = state[active_state];
 
-      upsert(data, UPDATER);
-      // for (let key = 0; key < data.length; key++) {
-      //   let ThisKey = data[key];
-      //   let KeyData = state[active_state];
-
-      //   let g = deepUpdater(KeyData, ThisKey.index, ThisKey.value);
-      // }
+      upsert(OLD_STATE, data);
     },
 
     set: (state: any, action) => {

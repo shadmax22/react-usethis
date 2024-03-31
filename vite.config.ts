@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: "index.tsx",
+      entry: {
+        index: "index.js",
+        thisProvider: "src/thisProvider/index.ts",
+      },
       name: "useThis", // Replace with your library name
     },
     rollupOptions: {
@@ -17,8 +20,10 @@ export default defineConfig({
           react: "React",
           "react-dom": "ReactDOM",
         },
+        format: "umd", // Universal Module Definition (UMD)
       },
     },
+    sourcemap: true,
   },
   server: {
     open: "/test/index.html",

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useThis } from "../";
-import { set } from "../";
+import { useThis } from "../main";
+import { set } from "../main";
 
 export default function App() {
   let NewState = useThis("HelloWorld");
