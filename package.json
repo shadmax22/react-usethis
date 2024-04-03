@@ -1,16 +1,34 @@
 {
   "name": "react-usethis",
-  "version": "0.1.13",
+  "version": "0.1.14",
+  "description": "Redux state management utilty",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/shadmax22/react-usethis.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Md Shad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shadmax22/react-usethis/issues"
+  },
+  "homepage": "https://github.com/shadmax22/react-usethis#readme",
   "type": "module",
   "module": "dist/index.js",
+  "main": "dist/index.cjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.umd.cjs"
+      "require": "./dist/index.umd.cjs",
+      "types": "./dist/index.d.ts"
     },
     "./thisProvider": {
       "import": "./dist/thisProvider.js",
-      "require": "./dist/thisProvider.umd.cjs"
+      "require": "./dist/thisProvider.umd.cjs",
+      "types": "./dist/thisProvider/index.d.ts"
     }
   },
   "scripts": {

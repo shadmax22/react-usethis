@@ -10,7 +10,11 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noEmit": true,
+
     "jsx": "react-jsx",
+
+    "outDir": "./dist",
 
     /* Linting */
     "strict": true,
@@ -20,7 +24,6 @@
      "declarationDir": "./dist/types",
     "declaration": true
   },
-  "include": ["*", "src"],
+    "include": ["src/**/*", "index.ts"],
     "exclude": ["node_modules", "dist", "**/*.spec.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
 }

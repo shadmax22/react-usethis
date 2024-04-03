@@ -2742,17 +2742,23 @@ function Io(e, t) {
 function Vo(e) {
   let t = jo();
   const r = So((n) => n.This);
-  return pe.jsx(qr.Provider, { ...e, value: (n) => ({
-    update: Ao(n, t),
-    append: Mo(n, t),
-    upsert: Io(n, t),
-    dispatcher: t,
-    This: r[n] ?? null,
-    get: () => Ee.getState().This[n]
-  }) });
+  return /* @__PURE__ */ pe.jsx(
+    qr.Provider,
+    {
+      ...e,
+      value: (n) => ({
+        update: Ao(n, t),
+        append: Mo(n, t),
+        upsert: Io(n, t),
+        dispatcher: t,
+        This: r[n] ?? null,
+        get: () => Ee.getState().This[n]
+      })
+    }
+  );
 }
 function zo(e) {
-  return pe.jsx(pe.Fragment, { children: pe.jsx(ko, { store: Ee, children: pe.jsx(Vo, { ...e }) }) });
+  return /* @__PURE__ */ pe.jsx(pe.Fragment, { children: /* @__PURE__ */ pe.jsx(ko, { store: Ee, children: /* @__PURE__ */ pe.jsx(Vo, { ...e }) }) });
 }
 export {
   zo as ThisProvider
