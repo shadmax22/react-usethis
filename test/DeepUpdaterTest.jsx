@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useThis } from "../index";
+import { getThis, useThis } from "../index";
 import { set } from "../index";
 export const _LOAD_SCHEMA = {
   id: "1",
@@ -63,6 +63,7 @@ export default function DeepUpdaterTest() {
   let { This, update, upsert } = useThis("MY_STATE");
 
   useEffect(() => {
+    console.log(getThis("MY_STATE"));
     update(_INITIAL_VALUE);
   }, []);
 
