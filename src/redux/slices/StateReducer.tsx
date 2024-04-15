@@ -28,12 +28,11 @@ export const StateReducer = createSlice({
     },
     upsert: (state: any, action) => {
       // index = greeen.k.someValue.value
-
       let { data, active_state } = action.payload;
 
       let OLD_STATE = state[active_state];
 
-      upsert(OLD_STATE, data);
+      state[active_state] = upsert(OLD_STATE, data);
     },
 
     set: (state: any, action) => {

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useThis } from "../main";
-import { set } from "../main";
+import { useThis } from "../index";
+import { set } from "../index";
 
 export default function App() {
   let NewState = useThis("HelloWorld");
@@ -25,13 +25,14 @@ export default function App() {
 
     let [T1, T2] = [0, 0];
 
-    This = NewState.upsert({
-      g: {
-        gr: {
-          blue: { g: { green: set(12) } },
-        },
-      },
-    });
+    NewState.upsert(set((e) => ({ t: 1 })));
+    // This = NewState.upsert({
+    //   g: {
+    //     gr: {
+    //       blue: { g: { green: set(12) } },
+    //     },
+    //   },
+    // });
 
     // for (let i = 0; i < 1000; i++) {
     //   const startTime = performance.now();
@@ -84,7 +85,9 @@ export default function App() {
     //   T2 += timeElapsed2;
     // }
 
-    console.log("1: " + T1 + ", 2:" + T2);
+    // console.log("1: " + T1 + ", 2:" + T2);
+
+    console.log(This);
   }, []);
 
   return (

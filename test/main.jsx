@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ThisProvider } from "../dist/thisProvider";
+import { ThisProvider } from "../src/thisProvider";
 import App from "./App";
+import DeepUpdaterTest from "./DeepUpdaterTest";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThisProvider>
-      <App></App>
+      <DeepUpdaterTest />
     </ThisProvider>
   </React.StrictMode>
 );

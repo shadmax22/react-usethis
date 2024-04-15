@@ -1,6 +1,6 @@
 import * as Be from "react";
 import xe from "react";
-import { c as Kr, T as qr } from "./js-upsert-4-75sU8h.js";
+import { i as Kr, T as qr } from "./js-upsert-DMSWX9bm.js";
 var Je = { exports: {} }, le = {};
 /**
  * @license React
@@ -2334,7 +2334,7 @@ const mr = ro({
     },
     upsert: (e, t) => {
       let { data: r, active_state: n } = t.payload, i = e[n];
-      Kr(i, r);
+      e[n] = Kr(i, r);
     },
     set: (e, t) => {
       Array.isArray(t.payload.data) ? e[t.payload.state] = [
@@ -2717,26 +2717,32 @@ var jo = /* @__PURE__ */ Po();
 wo(mo.useSyncExternalStoreWithSelector);
 function Ao(e, t) {
   return function(n) {
-    return t(ct.update({
-      data: n,
-      state: e
-    })), Ee.getState().This[e];
+    return t(
+      ct.update({
+        data: n,
+        state: e
+      })
+    ), Ee.getState().This[e];
   };
 }
 function Mo(e, t) {
   return function(n) {
-    return t(ct.update({
-      data: n,
-      state: e
-    })), Ee.getState().This[e];
+    return t(
+      ct.update({
+        data: n,
+        state: e
+      })
+    ), Ee.getState().This[e];
   };
 }
 function Io(e, t) {
   return function(n) {
-    return t(ct.upsert({
-      data: n,
-      active_state: e
-    })), Ee.getState().This[e];
+    return t(
+      ct.upsert({
+        data: n,
+        active_state: e
+      })
+    ), Ee.getState().This[e];
   };
 }
 function Vo(e) {
