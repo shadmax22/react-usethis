@@ -30,6 +30,8 @@ export const StateReducer = createSlice({
       // index = greeen.k.someValue.value
       let { data, active_state } = action.payload;
 
+      if ((state[active_state] ?? null) === null) state[active_state] = {};
+
       let OLD_STATE = state[active_state];
 
       state[active_state] = upsert(OLD_STATE, data);

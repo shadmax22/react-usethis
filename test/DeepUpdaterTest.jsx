@@ -63,7 +63,7 @@ export default function DeepUpdaterTest() {
   let { This, update, upsert } = useThis("MY_STATE");
 
   useEffect(() => {
-    console.log(getThis("MY_STATE"));
+    console.log(getThis("MY_STATEx", { data: { g: "g" }, type: "update" }));
     update(_INITIAL_VALUE);
   }, []);
 

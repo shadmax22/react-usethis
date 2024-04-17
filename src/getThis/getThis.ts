@@ -15,7 +15,7 @@ export function getThis(
     }),
     upsert: StateHandler.upsert({
       data: NEW_DATA?.data ?? {},
-      state: STATE_NAME,
+      active_state: STATE_NAME,
     }),
   };
 

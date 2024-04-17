@@ -1768,7 +1768,9 @@ const Qe = sr({
       };
     },
     upsert: (e, t) => {
-      let { data: r, active_state: n } = t.payload, o = e[n];
+      let { data: r, active_state: n } = t.payload;
+      (e[n] ?? null) === null && (e[n] = {});
+      let o = e[n];
       e[n] = et(o, r);
     },
     set: (e, t) => {
@@ -1792,4 +1794,4 @@ export {
   Nr as _,
   _r as h
 };
-//# sourceMappingURL=store-uuQG19xZ.js.map
+//# sourceMappingURL=store-xuNIvq-b.js.map
