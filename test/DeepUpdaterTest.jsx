@@ -63,8 +63,8 @@ export default function DeepUpdaterTest() {
   let { This, update, upsert } = useThis("MY_STATE");
 
   useEffect(() => {
-    console.log(getThis("MY_STATEx", { data: { g: "g" }, type: "update" }));
-    update(_INITIAL_VALUE);
+    // console.log(getThis("MY_STATEx", { data: { g: "g" }, type: "update" }));
+    update(["g"]);
   }, []);
 
   const setValue = (e, current, oldValues) => {
@@ -126,10 +126,9 @@ export default function DeepUpdaterTest() {
   return (
     <>
       <input
-        value={This?.Load[0]?.WidthShowable ?? ""}
         onChange={(e) => {
-          This = upsert({
-            Load: set((o) => setValue(e, "width", o), [0]),
+          This = upsert(set("fr", [0]), {
+            returnType: "array",
           });
         }}
       ></input>

@@ -1,6 +1,6 @@
 import { createContext as Ze } from "react";
 const br = Ze({});
-function _r(e, t = null) {
+function gr(e, t = null) {
   return {
     ["$$@@@@__upsert_hook_" + Math.floor(Math.random() * 100)]: {
       value: e,
@@ -136,8 +136,8 @@ function Ae(e, t, r) {
   }
   let n = e, o = t, i = /* @__PURE__ */ new Map(), s = i, c = 0, u = !1;
   function f() {
-    s === i && (s = /* @__PURE__ */ new Map(), i.forEach((p, _) => {
-      s.set(_, p);
+    s === i && (s = /* @__PURE__ */ new Map(), i.forEach((p, g) => {
+      s.set(g, p);
     }));
   }
   function a() {
@@ -150,14 +150,14 @@ function Ae(e, t, r) {
       throw new Error(process.env.NODE_ENV === "production" ? O(4) : `Expected the listener to be a function. Instead, received: '${x(p)}'`);
     if (u)
       throw new Error(process.env.NODE_ENV === "production" ? O(5) : "You may not call store.subscribe() while the reducer is executing. If you would like to be notified after the store has been updated, subscribe from a component and invoke store.getState() in the callback to access the latest state. See https://redux.js.org/api/store#subscribelistener for more details.");
-    let _ = !0;
+    let g = !0;
     f();
-    const g = c++;
-    return s.set(g, p), function() {
-      if (_) {
+    const _ = c++;
+    return s.set(_, p), function() {
+      if (g) {
         if (u)
           throw new Error(process.env.NODE_ENV === "production" ? O(6) : "You may not unsubscribe from a store listener while the reducer is executing. See https://redux.js.org/api/store#subscribelistener for more details.");
-        _ = !1, f(), s.delete(g), i = null;
+        g = !1, f(), s.delete(_), i = null;
       }
     };
   }
@@ -175,8 +175,8 @@ function Ae(e, t, r) {
     } finally {
       u = !1;
     }
-    return (i = s).forEach((g) => {
-      g();
+    return (i = s).forEach((_) => {
+      _();
     }), p;
   }
   function h(p) {
@@ -197,15 +197,15 @@ function Ae(e, t, r) {
        * be used to unsubscribe the observable from the store, and prevent further
        * emission of values from the observable.
        */
-      subscribe(_) {
-        if (typeof _ != "object" || _ === null)
-          throw new Error(process.env.NODE_ENV === "production" ? O(11) : `Expected the observer to be an object. Instead, received: '${x(_)}'`);
-        function g() {
-          const E = _;
+      subscribe(g) {
+        if (typeof g != "object" || g === null)
+          throw new Error(process.env.NODE_ENV === "production" ? O(11) : `Expected the observer to be an object. Instead, received: '${x(g)}'`);
+        function _() {
+          const E = g;
           E.next && E.next(a());
         }
-        return g(), {
-          unsubscribe: p(g)
+        return _(), {
+          unsubscribe: p(_)
         };
       },
       [me]() {
@@ -460,14 +460,14 @@ function ce(e) {
 function ae(e) {
   e === W && (W = e.parent_);
 }
-function _e(e) {
+function ge(e) {
   return W = mt(W, e);
 }
 function wt(e) {
   const t = e[k];
   t.type_ === 0 || t.type_ === 1 ? t.revoke_() : t.revoked_ = !0;
 }
-function ge(e, t) {
+function _e(e, t) {
   t.unfinalizedDrafts_ = t.drafts_.length;
   const r = t.drafts_[0];
   return e !== void 0 && e !== r ? (r[k].modified_ && (ce(t), D(4)), M(e) && (e = G(t, e), t.parent_ || H(t, e)), t.patches_ && P("Patches").generateReplacementPatches_(
@@ -654,7 +654,7 @@ function oe(e) {
     e.scope_.immer_.useStrictShallowCopy_
   ));
 }
-var _t = class {
+var gt = class {
   constructor(e) {
     this.autoFreeze_ = !0, this.useStrictShallowCopy_ = !1, this.produce = (t, r, n) => {
       if (typeof t == "function" && typeof r != "function") {
@@ -668,14 +668,14 @@ var _t = class {
       typeof r != "function" && D(6), n !== void 0 && typeof n != "function" && D(7);
       let o;
       if (M(t)) {
-        const i = _e(this), s = fe(t, void 0);
+        const i = ge(this), s = fe(t, void 0);
         let c = !0;
         try {
           o = r(s), c = !1;
         } finally {
           c ? ce(i) : ae(i);
         }
-        return be(i, n), ge(o, i);
+        return be(i, n), _e(o, i);
       } else if (!t || typeof t != "object") {
         if (o = r(t), o === void 0 && (o = t), o === Re && (o = void 0), this.autoFreeze_ && le(o, !0), n) {
           const i = [], s = [];
@@ -695,14 +695,14 @@ var _t = class {
   }
   createDraft(e) {
     M(e) || D(8), R(e) && (e = $e(e));
-    const t = _e(this), r = fe(e, void 0);
+    const t = ge(this), r = fe(e, void 0);
     return r[k].isManual_ = !0, ae(t), r;
   }
   finishDraft(e, t) {
     const r = e && e[k];
     (!r || !r.isManual_) && D(9);
     const { scope_: n } = r;
-    return be(n, t), ge(void 0, n);
+    return be(n, t), _e(void 0, n);
   }
   /**
    * Pass true to automatically freeze all copies created by Immer.
@@ -759,7 +759,7 @@ function ze(e) {
     je(r, n, ze(o));
   }), t && (t.finalized_ = !1), r;
 }
-var C = new _t(), Fe = C.produce;
+var C = new gt(), Fe = C.produce;
 C.produceWithPatches.bind(
   C
 );
@@ -768,7 +768,7 @@ C.setUseStrictShallowCopy.bind(C);
 C.applyPatches.bind(C);
 C.createDraft.bind(C);
 C.finishDraft.bind(C);
-var gt = (e, t, r) => {
+var _t = (e, t, r) => {
   if (t.length === 1 && t[0] === r) {
     let n = !1;
     try {
@@ -856,7 +856,7 @@ var Ct = (e, t) => {
   return {
     identityFunctionCheck: {
       shouldRun: r === "always" || r === "once" && e,
-      run: gt
+      run: _t
     },
     inputStabilityCheck: {
       shouldRun: n === "always" || n === "once" && e,
@@ -934,7 +934,7 @@ function We(e, ...t) {
       argsMemoize: h = he,
       argsMemoizeOptions: y = [],
       devModeChecks: b = {}
-    } = a, p = ve(l), _ = ve(y), g = kt(o), m = d(function() {
+    } = a, p = ve(l), g = ve(y), _ = kt(o), m = d(function() {
       return i++, f.apply(
         null,
         arguments
@@ -944,7 +944,7 @@ function We(e, ...t) {
     const N = h(function() {
       s++;
       const S = Oe(
-        g,
+        _,
         arguments
       );
       if (c = m.apply(null, S), process.env.NODE_ENV !== "production") {
@@ -955,7 +955,7 @@ function We(e, ...t) {
           c
         ), z.shouldRun) {
           const te = Oe(
-            g,
+            _,
             arguments
           );
           z.run(
@@ -967,11 +967,11 @@ function We(e, ...t) {
         E && (E = !1);
       }
       return c;
-    }, ..._);
+    }, ...g);
     return Object.assign(N, {
       resultFunc: f,
       memoizedResultFunc: m,
-      dependencies: g,
+      dependencies: _,
       dependencyRecomputations: () => s,
       resetDependencyRecomputations: () => {
         s = 0;
@@ -1265,22 +1265,22 @@ function Kt(e = {}) {
         const p = de(h, "", t, r, o, a);
         if (p) {
           const {
-            keyPath: _,
-            value: g
+            keyPath: g,
+            value: _
           } = p;
-          console.error(`A non-serializable value was detected in an action, in the path: \`${_}\`. Value:`, g, `
+          console.error(`A non-serializable value was detected in an action, in the path: \`${g}\`. Value:`, _, `
 Take a look at the logic that dispatched this action: `, h, `
 (See https://redux.js.org/faq/actions#why-should-type-be-a-string-or-at-least-serializable-why-should-my-action-types-be-constants)`, `
 (To allow non-serializable values see: https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data)`);
         }
       }), c || (b.measureTime(() => {
-        const p = d.getState(), _ = de(p, "", t, r, i, a);
-        if (_) {
+        const p = d.getState(), g = de(p, "", t, r, i, a);
+        if (g) {
           const {
-            keyPath: g,
+            keyPath: _,
             value: m
-          } = _;
-          console.error(`A non-serializable value was detected in the state, in the path: \`${g}\`. Value:`, m, `
+          } = g;
+          console.error(`A non-serializable value was detected in the state, in the path: \`${_}\`. Value:`, m, `
 Take a look at the reducer(s) handling this action type: ${h.type}.
 (See https://redux.js.org/faq/organizing-state#can-i-put-functions-promises-or-other-non-serializable-items-in-my-store-state)`);
         }
@@ -1552,7 +1552,7 @@ function or({
     function p() {
       return y || (y = d()), y.getInitialState();
     }
-    function _(m, E = !1) {
+    function g(m, E = !1) {
       function N(S) {
         let v = S[m];
         if (typeof v > "u") {
@@ -1585,13 +1585,13 @@ function or({
         selectSlice: N
       };
     }
-    const g = {
+    const _ = {
       name: i,
       reducer: b,
       actions: f.actionCreators,
       caseReducers: f.sliceCaseReducersByName,
       getInitialState: p,
-      ..._(s),
+      ...g(s),
       injectInto(m, {
         reducerPath: E,
         ...N
@@ -1601,12 +1601,12 @@ function or({
           reducerPath: T,
           reducer: b
         }, N), {
-          ...g,
-          ..._(T, !0)
+          ..._,
+          ...g(T, !0)
         };
       }
     };
-    return g;
+    return _;
   };
 }
 function ir(e, t, r, n) {
@@ -1768,10 +1768,10 @@ const Qe = sr({
       };
     },
     upsert: (e, t) => {
-      let { data: r, active_state: n } = t.payload;
+      let { data: r, active_state: n, config: o } = t.payload;
       (e[n] ?? null) === null && (e[n] = {});
-      let o = e[n];
-      e[n] = et(o, r);
+      let i = e[n];
+      e[n] = et(i, r, o ?? {});
     },
     set: (e, t) => {
       Array.isArray(t.payload.data) ? e[t.payload.state] = [
@@ -1783,15 +1783,15 @@ const Qe = sr({
       };
     }
   }
-}), { ...gr } = Qe.actions, wr = Qe.reducer, Nr = Qt({
+}), { ..._r } = Qe.actions, wr = Qe.reducer, Nr = Qt({
   reducer: {
     This: wr
   }
 });
 export {
-  gr as S,
+  _r as S,
   br as T,
   Nr as _,
-  _r as h
+  gr as h
 };
-//# sourceMappingURL=store-xuNIvq-b.js.map
+//# sourceMappingURL=store-CApjbA-f.js.map

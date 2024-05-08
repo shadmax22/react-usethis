@@ -3,7 +3,7 @@ import _MAINSTORE from "../redux/store";
 
 export function getThis(
   STATE_NAME: string,
-  NEW_DATA?: { data?: any; type?: "update" | "upsert" }
+  NEW_DATA?: { data?: any; type?: "update" | "upsert"; config?: any }
 ) {
   if ((NEW_DATA?.data ?? null) === null)
     return _MAINSTORE.getState().This[STATE_NAME] ?? null;
@@ -16,6 +16,7 @@ export function getThis(
     upsert: StateHandler.upsert({
       data: NEW_DATA?.data ?? {},
       active_state: STATE_NAME,
+      config: NEW_DATA?.config,
     }),
   };
 

@@ -26,11 +26,17 @@ export function Appender(StateName: string, dispatcher: any) {
 }
 
 export function Upsert(StateName: string, dispatcher: any) {
-  return function upsert(data: any) {
+  return function upsert(
+    data: any,
+    config?: {
+      returnType?: "object" | "array";
+    }
+  ) {
     dispatcher(
       StateHandler.upsert({
         data: data,
         active_state: StateName,
+        config: config ?? {},
       })
     );
     return _MAINSTORE.getState().This[StateName];
