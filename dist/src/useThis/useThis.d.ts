@@ -1,1 +1,1 @@
-export declare function useThis(StateName: string): any;
+export declare function useThis(StateName: string, defaultValue?: any): any;
