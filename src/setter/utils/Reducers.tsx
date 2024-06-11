@@ -3,9 +3,14 @@ import _MAINSTORE from "../../redux/store";
 
 export function Updater(StateName: string, dispatcher: any) {
   return function update(data: any) {
+    let __DATA =
+      typeof data == "function"
+        ? data(_MAINSTORE.getState().This[StateName])
+        : data;
+
     dispatcher(
       StateHandler.update({
-        data: data,
+        data: __DATA,
         state: StateName,
       })
     );

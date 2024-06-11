@@ -1,109 +1,14 @@
-import { createContext as Ze } from "react";
-const _r = Ze({});
-function gr(e, t = null) {
-  let r = Math.floor(Math.random() * 100), n = typeof t == "string" ? et(t) : t;
-  return {
-    ["$$@@@@__upsert_hook_" + r]: {
-      value: e,
-      index: n,
-      isFunction: typeof e == "function"
-    }
-  };
-}
-function et(e) {
-  return e.replace(/[\[\]'"]/g, "").split(".");
-}
-function Te({ obj: e }, t, r = [], n = !1) {
-  let o = [];
-  for (let i in e) {
-    let s = e[i];
-    if (i.includes(t) && (s ?? !1))
-      o.push({
-        index: [...r, ...s.index ?? []],
-        value: s.value,
-        isFunction: s.isFunction
-      });
-    else if (typeof s == "object") {
-      const c = Te(
-        { obj: s },
-        t,
-        [...r, i],
-        !0
-      );
-      o = o.concat(c.obj);
-    }
-  }
-  return n ? { obj: o } : {
-    result: o
-  };
-}
-function Ce(e, t, r, n = !1, o) {
-  if (t.length <= 1) {
-    if (t.length > 0)
-      try {
-        return e[t[0]] = n ? r(e[t[0] ?? t]) : r, e;
-      } catch {
-        throw `Unable to set value at index [${t}], ERROR: SETTER_FAILED`;
-      }
-    if (e === null || typeof e != "object")
-      throw Error(
-        "Initial value is not a object, ERROR: INITITAL_VALUE_PARSE_FAILED"
-      );
-    let s = n ? r(e) : r;
-    if (o.returnType == "array")
-      return e[0] = s, e;
-    if (typeof s != "object")
-      throw `Only object or array can be setted as a default value. Value given ${s}.`;
-    for (const c of Object.keys(s))
-      e[c] = s[c];
-    return e;
-  }
-  let i = (e ?? [])[t[0]] ?? !1;
-  if (!i) {
-    let s = Re(t, r, n);
-    try {
-      e[t[0]] = s;
-    } catch {
-      throw `Unable to set value at index [${t}], ERROR: SETTER_FAILED`;
-    }
-    return e;
-  }
-  return t.shift(), Ce(i, t, r, n, o);
-}
-function Re(e, t, r = !1) {
-  let n = [...e], o;
-  return n.length == 1 ? o = r ? t(null) : t : (o = {}, n.shift(), o[n[0]] = Re(n, t, r)), o;
-}
-function tt(e, t, r = { returnType: "object" }) {
-  Array.isArray(e) && (r.returnType = "array");
-  let { result: n } = Te({ obj: t }, "$$@@@@__upsert_hook");
-  for (let o = 0; o < n.length; o++) {
-    let i = n[o];
-    Ce(
-      e,
-      i.index,
-      i.value,
-      i.isFunction,
-      r
-    );
-  }
-  try {
-    return ((r == null ? void 0 : r.returnType) ?? "object") == "object" ? { ...e } : [...e];
-  } catch {
-    throw Error(
-      `Cannot return value as returnType '${r.returnType}'. Please try '${r.returnType == "array" ? "OBJECT" : "ARRAY"}' returnType, ERROR: RETURN_ERROR.`
-    );
-  }
-}
+import { createContext as tt } from "react";
+const Dr = tt(null);
 function O(e) {
   return `Minified Redux error #${e}; visit https://redux.js.org/Errors?code=${e} for the full message or use the non-minified dev environment for full errors. `;
 }
-var rt = typeof Symbol == "function" && Symbol.observable || "@@observable", me = rt, re = () => Math.random().toString(36).substring(7).split("").join("."), nt = {
-  INIT: `@@redux/INIT${/* @__PURE__ */ re()}`,
-  REPLACE: `@@redux/REPLACE${/* @__PURE__ */ re()}`,
-  PROBE_UNKNOWN_ACTION: () => `@@redux/PROBE_UNKNOWN_ACTION${re()}`
+var rt = typeof Symbol == "function" && Symbol.observable || "@@observable", Ee = rt, oe = () => Math.random().toString(36).substring(7).split("").join("."), nt = {
+  INIT: `@@redux/INIT${/* @__PURE__ */ oe()}`,
+  REPLACE: `@@redux/REPLACE${/* @__PURE__ */ oe()}`,
+  PROBE_UNKNOWN_ACTION: () => `@@redux/PROBE_UNKNOWN_ACTION${oe()}`
 }, j = nt;
-function W(e) {
+function B(e) {
   if (typeof e != "object" || e === null)
     return !1;
   let t = e;
@@ -156,7 +61,7 @@ function I(e) {
   let t = typeof e;
   return process.env.NODE_ENV !== "production" && (t = ot(e)), t;
 }
-function Ae(e, t, r) {
+function Re(e, t, r) {
   if (typeof e != "function")
     throw new Error(process.env.NODE_ENV === "production" ? O(2) : `Expected the root reducer to be a function. Instead, received: '${I(e)}'`);
   if (typeof t == "function" && typeof r == "function" || typeof r == "function" && typeof arguments[3] == "function")
@@ -164,7 +69,7 @@ function Ae(e, t, r) {
   if (typeof t == "function" && typeof r > "u" && (r = t, t = void 0), typeof r < "u") {
     if (typeof r != "function")
       throw new Error(process.env.NODE_ENV === "production" ? O(1) : `Expected the enhancer to be a function. Instead, received: '${I(r)}'`);
-    return r(Ae)(e, t);
+    return r(Re)(e, t);
   }
   let n = e, o = t, i = /* @__PURE__ */ new Map(), s = i, c = 0, u = !1;
   function f() {
@@ -194,7 +99,7 @@ function Ae(e, t, r) {
     };
   }
   function d(p) {
-    if (!W(p))
+    if (!B(p))
       throw new Error(process.env.NODE_ENV === "production" ? O(7) : `Actions must be plain objects. Instead, the actual type was: '${I(p)}'. You may need to add middleware to your store setup to handle dispatching other values, such as 'redux-thunk' to handle dispatching functions. See https://redux.js.org/tutorials/fundamentals/part-4-store#middleware and https://redux.js.org/tutorials/fundamentals/part-6-async-logic#using-the-redux-thunk-middleware for examples.`);
     if (typeof p.type > "u")
       throw new Error(process.env.NODE_ENV === "production" ? O(8) : 'Actions may not have an undefined "type" property. You may have misspelled an action type string constant.');
@@ -240,7 +145,7 @@ function Ae(e, t, r) {
           unsubscribe: p(g)
         };
       },
-      [me]() {
+      [Ee]() {
         return this;
       }
     };
@@ -252,10 +157,10 @@ function Ae(e, t, r) {
     subscribe: l,
     getState: a,
     replaceReducer: h,
-    [me]: y
+    [Ee]: y
   };
 }
-function we(e) {
+function be(e) {
   typeof console < "u" && typeof console.error == "function" && console.error(e);
   try {
     throw new Error(e);
@@ -266,7 +171,7 @@ function at(e, t, r, n) {
   const o = Object.keys(t), i = r && r.type === j.INIT ? "preloadedState argument passed to createStore" : "previous state received by the reducer";
   if (o.length === 0)
     return "Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers.";
-  if (!W(e))
+  if (!B(e))
     return `The ${i} has unexpected type of "${I(e)}". Expected argument to be an object with the following keys: "${o.join('", "')}"`;
   const s = Object.keys(e).filter((c) => !t.hasOwnProperty(c) && !n[c]);
   if (s.forEach((c) => {
@@ -291,7 +196,7 @@ function ft(e) {
   const t = Object.keys(e), r = {};
   for (let s = 0; s < t.length; s++) {
     const c = t[s];
-    process.env.NODE_ENV !== "production" && typeof e[c] > "u" && we(`No reducer provided for key "${c}"`), typeof e[c] == "function" && (r[c] = e[c]);
+    process.env.NODE_ENV !== "production" && typeof e[c] > "u" && be(`No reducer provided for key "${c}"`), typeof e[c] == "function" && (r[c] = e[c]);
   }
   const n = Object.keys(r);
   let o;
@@ -307,7 +212,7 @@ function ft(e) {
       throw i;
     if (process.env.NODE_ENV !== "production") {
       const l = at(c, r, u, o);
-      l && we(l);
+      l && be(l);
     }
     let f = !1;
     const a = {};
@@ -322,7 +227,7 @@ function ft(e) {
     return f = f || n.length !== Object.keys(c).length, f ? a : c;
   };
 }
-function Y(...e) {
+function H(...e) {
   return e.length === 0 ? (t) => t : e.length === 1 ? e[0] : e.reduce((t, r) => (...n) => t(r(...n)));
 }
 function lt(...e) {
@@ -335,16 +240,16 @@ function lt(...e) {
       getState: o.getState,
       dispatch: (u, ...f) => i(u, ...f)
     }, c = e.map((u) => u(s));
-    return i = Y(...c)(o.dispatch), {
+    return i = H(...c)(o.dispatch), {
       ...o,
       dispatch: i
     };
   };
 }
-function Ie(e) {
-  return W(e) && "type" in e && typeof e.type == "string";
+function Ae(e) {
+  return B(e) && "type" in e && typeof e.type == "string";
 }
-var Me = Symbol.for("immer-nothing"), Ee = Symbol.for("immer-draftable"), k = Symbol.for("immer-state"), dt = process.env.NODE_ENV !== "production" ? [
+var Ie = Symbol.for("immer-nothing"), _e = Symbol.for("immer-draftable"), T = Symbol.for("immer-state"), dt = process.env.NODE_ENV !== "production" ? [
   // All error codes, starting by 0:
   function(e) {
     return `The plugin for '${e}' has not been loaded into Immer. To enable the plugin, import and call \`enable${e}()\` when initializing your application.`;
@@ -386,14 +291,14 @@ function D(e, ...t) {
 }
 var $ = Object.getPrototypeOf;
 function M(e) {
-  return !!e && !!e[k];
+  return !!e && !!e[T];
 }
 function R(e) {
   var t;
-  return e ? xe(e) || Array.isArray(e) || !!e[Ee] || !!((t = e.constructor) != null && t[Ee]) || J(e) || Z(e) : !1;
+  return e ? Me(e) || Array.isArray(e) || !!e[_e] || !!((t = e.constructor) != null && t[_e]) || Z(e) || ee(e) : !1;
 }
 var pt = Object.prototype.constructor.toString();
-function xe(e) {
+function Me(e) {
   if (!e || typeof e != "object")
     return !1;
   const t = $(e);
@@ -403,44 +308,44 @@ function xe(e) {
   return r === Object ? !0 : typeof r == "function" && Function.toString.call(r) === pt;
 }
 function X(e, t) {
-  Q(e) === 0 ? Reflect.ownKeys(e).forEach((r) => {
+  J(e) === 0 ? Reflect.ownKeys(e).forEach((r) => {
     t(r, e[r], e);
   }) : e.forEach((r, n) => t(n, r, e));
 }
-function Q(e) {
-  const t = e[k];
-  return t ? t.type_ : Array.isArray(e) ? 1 : J(e) ? 2 : Z(e) ? 3 : 0;
+function J(e) {
+  const t = e[T];
+  return t ? t.type_ : Array.isArray(e) ? 1 : Z(e) ? 2 : ee(e) ? 3 : 0;
 }
-function ie(e, t) {
-  return Q(e) === 2 ? e.has(t) : Object.prototype.hasOwnProperty.call(e, t);
+function ce(e, t) {
+  return J(e) === 2 ? e.has(t) : Object.prototype.hasOwnProperty.call(e, t);
 }
-function je(e, t, r) {
-  const n = Q(e);
+function xe(e, t, r) {
+  const n = J(e);
   n === 2 ? e.set(t, r) : n === 3 ? e.add(r) : e[t] = r;
 }
 function ht(e, t) {
   return e === t ? e !== 0 || 1 / e === 1 / t : e !== e && t !== t;
 }
-function J(e) {
+function Z(e) {
   return e instanceof Map;
 }
-function Z(e) {
+function ee(e) {
   return e instanceof Set;
 }
 function x(e) {
   return e.copy_ || e.base_;
 }
-function se(e, t) {
-  if (J(e))
-    return new Map(e);
+function ae(e, t) {
   if (Z(e))
+    return new Map(e);
+  if (ee(e))
     return new Set(e);
   if (Array.isArray(e))
     return Array.prototype.slice.call(e);
-  if (!t && xe(e))
+  if (!t && Me(e))
     return $(e) ? { ...e } : Object.assign(/* @__PURE__ */ Object.create(null), e);
   const r = Object.getOwnPropertyDescriptors(e);
-  delete r[k];
+  delete r[T];
   let n = Reflect.ownKeys(r);
   for (let o = 0; o < n.length; o++) {
     const i = n[o], s = r[i];
@@ -454,13 +359,13 @@ function se(e, t) {
   }
   return Object.create($(e), r);
 }
-function de(e, t = !1) {
-  return ee(e) || M(e) || !R(e) || (Q(e) > 1 && (e.set = e.add = e.clear = e.delete = yt), Object.freeze(e), t && Object.entries(e).forEach(([r, n]) => de(n, !0))), e;
+function he(e, t = !1) {
+  return te(e) || M(e) || !R(e) || (J(e) > 1 && (e.set = e.add = e.clear = e.delete = yt), Object.freeze(e), t && Object.entries(e).forEach(([r, n]) => he(n, !0))), e;
 }
 function yt() {
   D(2);
 }
-function ee(e) {
+function te(e) {
   return Object.isFrozen(e);
 }
 var mt = {};
@@ -469,7 +374,7 @@ function P(e) {
   return t || D(0, e), t;
 }
 var U;
-function Pe() {
+function je() {
   return U;
 }
 function wt(e, t) {
@@ -483,53 +388,53 @@ function wt(e, t) {
     unfinalizedDrafts_: 0
   };
 }
-function be(e, t) {
+function ge(e, t) {
   t && (P("Patches"), e.patches_ = [], e.inversePatches_ = [], e.patchListener_ = t);
 }
-function ce(e) {
-  ae(e), e.drafts_.forEach(Et), e.drafts_ = null;
+function ue(e) {
+  fe(e), e.drafts_.forEach(Et), e.drafts_ = null;
 }
-function ae(e) {
+function fe(e) {
   e === U && (U = e.parent_);
 }
-function _e(e) {
+function ve(e) {
   return U = wt(U, e);
 }
 function Et(e) {
-  const t = e[k];
+  const t = e[T];
   t.type_ === 0 || t.type_ === 1 ? t.revoke_() : t.revoked_ = !0;
 }
-function ge(e, t) {
+function Ne(e, t) {
   t.unfinalizedDrafts_ = t.drafts_.length;
   const r = t.drafts_[0];
-  return e !== void 0 && e !== r ? (r[k].modified_ && (ce(t), D(4)), R(e) && (e = G(t, e), t.parent_ || H(t, e)), t.patches_ && P("Patches").generateReplacementPatches_(
-    r[k].base_,
+  return e !== void 0 && e !== r ? (r[T].modified_ && (ue(t), D(4)), R(e) && (e = G(t, e), t.parent_ || Q(t, e)), t.patches_ && P("Patches").generateReplacementPatches_(
+    r[T].base_,
     e,
     t.patches_,
     t.inversePatches_
-  )) : e = G(t, r, []), ce(t), t.patches_ && t.patchListener_(t.patches_, t.inversePatches_), e !== Me ? e : void 0;
+  )) : e = G(t, r, []), ue(t), t.patches_ && t.patchListener_(t.patches_, t.inversePatches_), e !== Ie ? e : void 0;
 }
 function G(e, t, r) {
-  if (ee(t))
+  if (te(t))
     return t;
-  const n = t[k];
+  const n = t[T];
   if (!n)
     return X(
       t,
-      (o, i) => Ne(e, n, t, o, i, r)
+      (o, i) => Oe(e, n, t, o, i, r)
     ), t;
   if (n.scope_ !== e)
     return t;
   if (!n.modified_)
-    return H(e, n.base_, !0), n.base_;
+    return Q(e, n.base_, !0), n.base_;
   if (!n.finalized_) {
     n.finalized_ = !0, n.scope_.unfinalizedDrafts_--;
     const o = n.copy_;
     let i = o, s = !1;
     n.type_ === 3 && (i = new Set(o), o.clear(), s = !0), X(
       i,
-      (c, u) => Ne(e, n, o, c, u, r, s)
-    ), H(e, o, !1), r && e.patches_ && P("Patches").generatePatches_(
+      (c, u) => Oe(e, n, o, c, u, r, s)
+    ), Q(e, o, !1), r && e.patches_ && P("Patches").generatePatches_(
       n,
       r,
       e.patches_,
@@ -538,30 +443,30 @@ function G(e, t, r) {
   }
   return n.copy_;
 }
-function Ne(e, t, r, n, o, i, s) {
+function Oe(e, t, r, n, o, i, s) {
   if (process.env.NODE_ENV !== "production" && o === r && D(5), M(o)) {
     const c = i && t && t.type_ !== 3 && // Set objects are atomic since they have no keys.
-    !ie(t.assigned_, n) ? i.concat(n) : void 0, u = G(e, o, c);
-    if (je(r, n, u), M(u))
+    !ce(t.assigned_, n) ? i.concat(n) : void 0, u = G(e, o, c);
+    if (xe(r, n, u), M(u))
       e.canAutoFreeze_ = !1;
     else
       return;
   } else
     s && r.add(o);
-  if (R(o) && !ee(o)) {
+  if (R(o) && !te(o)) {
     if (!e.immer_.autoFreeze_ && e.unfinalizedDrafts_ < 1)
       return;
-    G(e, o), (!t || !t.scope_.parent_) && typeof n != "symbol" && Object.prototype.propertyIsEnumerable.call(r, n) && H(e, o);
+    G(e, o), (!t || !t.scope_.parent_) && typeof n != "symbol" && Object.prototype.propertyIsEnumerable.call(r, n) && Q(e, o);
   }
 }
-function H(e, t, r = !1) {
-  !e.parent_ && e.immer_.autoFreeze_ && e.canAutoFreeze_ && de(t, r);
+function Q(e, t, r = !1) {
+  !e.parent_ && e.immer_.autoFreeze_ && e.canAutoFreeze_ && he(t, r);
 }
 function bt(e, t) {
   const r = Array.isArray(e), n = {
     type_: r ? 1 : 0,
     // Track which produce call this is associated with.
-    scope_: t ? t.scope_ : Pe(),
+    scope_: t ? t.scope_ : je(),
     // True for both shallow and deep changes.
     modified_: !1,
     // Used during finalization.
@@ -581,20 +486,20 @@ function bt(e, t) {
     revoke_: null,
     isManual_: !1
   };
-  let o = n, i = pe;
+  let o = n, i = ye;
   r && (o = [n], i = L);
   const { revoke: s, proxy: c } = Proxy.revocable(o, i);
   return n.draft_ = c, n.revoke_ = s, c;
 }
-var pe = {
+var ye = {
   get(e, t) {
-    if (t === k)
+    if (t === T)
       return e;
     const r = x(e);
-    if (!ie(r, t))
+    if (!ce(r, t))
       return _t(e, r, t);
     const n = r[t];
-    return e.finalized_ || !R(n) ? n : n === ne(e.base_, t) ? (oe(e), e.copy_[t] = fe(n, e)) : n;
+    return e.finalized_ || !R(n) ? n : n === ie(e.base_, t) ? (se(e), e.copy_[t] = de(n, e)) : n;
   },
   has(e, t) {
     return t in x(e);
@@ -603,23 +508,23 @@ var pe = {
     return Reflect.ownKeys(x(e));
   },
   set(e, t, r) {
-    const n = $e(x(e), t);
+    const n = Pe(x(e), t);
     if (n != null && n.set)
       return n.set.call(e.draft_, r), !0;
     if (!e.modified_) {
-      const o = ne(x(e), t), i = o == null ? void 0 : o[k];
+      const o = ie(x(e), t), i = o == null ? void 0 : o[T];
       if (i && i.base_ === r)
         return e.copy_[t] = r, e.assigned_[t] = !1, !0;
-      if (ht(r, o) && (r !== void 0 || ie(e.base_, t)))
+      if (ht(r, o) && (r !== void 0 || ce(e.base_, t)))
         return !0;
-      oe(e), ue(e);
+      se(e), le(e);
     }
     return e.copy_[t] === r && // special case: handle new props with value 'undefined'
     (r !== void 0 || t in e.copy_) || // special case: NaN
     Number.isNaN(r) && Number.isNaN(e.copy_[t]) || (e.copy_[t] = r, e.assigned_[t] = !0), !0;
   },
   deleteProperty(e, t) {
-    return ne(e.base_, t) !== void 0 || t in e.base_ ? (e.assigned_[t] = !1, oe(e), ue(e)) : delete e.assigned_[t], e.copy_ && delete e.copy_[t], !0;
+    return ie(e.base_, t) !== void 0 || t in e.base_ ? (e.assigned_[t] = !1, se(e), le(e)) : delete e.assigned_[t], e.copy_ && delete e.copy_[t], !0;
   },
   // Note: We never coerce `desc.value` into an Immer draft, because we can't make
   // the same guarantee in ES5 mode.
@@ -642,7 +547,7 @@ var pe = {
     D(12);
   }
 }, L = {};
-X(pe, (e, t) => {
+X(ye, (e, t) => {
   L[e] = function() {
     return arguments[0] = arguments[0][0], t.apply(this, arguments);
   };
@@ -651,22 +556,22 @@ L.deleteProperty = function(e, t) {
   return process.env.NODE_ENV !== "production" && isNaN(parseInt(t)) && D(13), L.set.call(this, e, t, void 0);
 };
 L.set = function(e, t, r) {
-  return process.env.NODE_ENV !== "production" && t !== "length" && isNaN(parseInt(t)) && D(14), pe.set.call(this, e[0], t, r, e[0]);
+  return process.env.NODE_ENV !== "production" && t !== "length" && isNaN(parseInt(t)) && D(14), ye.set.call(this, e[0], t, r, e[0]);
 };
-function ne(e, t) {
-  const r = e[k];
+function ie(e, t) {
+  const r = e[T];
   return (r ? x(r) : e)[t];
 }
 function _t(e, t, r) {
   var o;
-  const n = $e(t, r);
+  const n = Pe(t, r);
   return n ? "value" in n ? n.value : (
     // This is a very special case, if the prop is a getter defined by the
     // prototype, we should invoke it with the draft as context!
     (o = n.get) == null ? void 0 : o.call(e.draft_)
   ) : void 0;
 }
-function $e(e, t) {
+function Pe(e, t) {
   if (!(t in e))
     return;
   let r = $(e);
@@ -677,11 +582,11 @@ function $e(e, t) {
     r = $(r);
   }
 }
-function ue(e) {
-  e.modified_ || (e.modified_ = !0, e.parent_ && ue(e.parent_));
+function le(e) {
+  e.modified_ || (e.modified_ = !0, e.parent_ && le(e.parent_));
 }
-function oe(e) {
-  e.copy_ || (e.copy_ = se(
+function se(e) {
+  e.copy_ || (e.copy_ = ae(
     e.base_,
     e.scope_.immer_.useStrictShallowCopy_
   ));
@@ -700,16 +605,16 @@ var gt = class {
       typeof r != "function" && D(6), n !== void 0 && typeof n != "function" && D(7);
       let o;
       if (R(t)) {
-        const i = _e(this), s = fe(t, void 0);
+        const i = ve(this), s = de(t, void 0);
         let c = !0;
         try {
           o = r(s), c = !1;
         } finally {
-          c ? ce(i) : ae(i);
+          c ? ue(i) : fe(i);
         }
-        return be(i, n), ge(o, i);
+        return ge(i, n), Ne(o, i);
       } else if (!t || typeof t != "object") {
-        if (o = r(t), o === void 0 && (o = t), o === Me && (o = void 0), this.autoFreeze_ && de(o, !0), n) {
+        if (o = r(t), o === void 0 && (o = t), o === Ie && (o = void 0), this.autoFreeze_ && he(o, !0), n) {
           const i = [], s = [];
           P("Patches").generateReplacementPatches_(t, o, i, s), n(i, s);
         }
@@ -726,15 +631,15 @@ var gt = class {
     }, typeof (e == null ? void 0 : e.autoFreeze) == "boolean" && this.setAutoFreeze(e.autoFreeze), typeof (e == null ? void 0 : e.useStrictShallowCopy) == "boolean" && this.setUseStrictShallowCopy(e.useStrictShallowCopy);
   }
   createDraft(e) {
-    R(e) || D(8), M(e) && (e = Ve(e));
-    const t = _e(this), r = fe(e, void 0);
-    return r[k].isManual_ = !0, ae(t), r;
+    R(e) || D(8), M(e) && (e = $e(e));
+    const t = ve(this), r = de(e, void 0);
+    return r[T].isManual_ = !0, fe(t), r;
   }
   finishDraft(e, t) {
-    const r = e && e[k];
+    const r = e && e[T];
     (!r || !r.isManual_) && D(9);
     const { scope_: n } = r;
-    return be(n, t), ge(void 0, n);
+    return ge(n, t), Ne(void 0, n);
   }
   /**
    * Pass true to automatically freeze all copies created by Immer.
@@ -769,38 +674,38 @@ var gt = class {
     );
   }
 };
-function fe(e, t) {
-  const r = J(e) ? P("MapSet").proxyMap_(e, t) : Z(e) ? P("MapSet").proxySet_(e, t) : bt(e, t);
-  return (t ? t.scope_ : Pe()).drafts_.push(r), r;
+function de(e, t) {
+  const r = Z(e) ? P("MapSet").proxyMap_(e, t) : ee(e) ? P("MapSet").proxySet_(e, t) : bt(e, t);
+  return (t ? t.scope_ : je()).drafts_.push(r), r;
+}
+function $e(e) {
+  return M(e) || D(10, e), Ve(e);
 }
 function Ve(e) {
-  return M(e) || D(10, e), ze(e);
-}
-function ze(e) {
-  if (!R(e) || ee(e))
+  if (!R(e) || te(e))
     return e;
-  const t = e[k];
+  const t = e[T];
   let r;
   if (t) {
     if (!t.modified_)
       return t.base_;
-    t.finalized_ = !0, r = se(e, t.scope_.immer_.useStrictShallowCopy_);
+    t.finalized_ = !0, r = ae(e, t.scope_.immer_.useStrictShallowCopy_);
   } else
-    r = se(e, !0);
+    r = ae(e, !0);
   return X(r, (n, o) => {
-    je(r, n, ze(o));
+    xe(r, n, Ve(o));
   }), t && (t.finalized_ = !1), r;
 }
-var T = new gt(), Fe = T.produce;
-T.produceWithPatches.bind(
-  T
+var k = new gt(), ze = k.produce;
+k.produceWithPatches.bind(
+  k
 );
-T.setAutoFreeze.bind(T);
-T.setUseStrictShallowCopy.bind(T);
-T.applyPatches.bind(T);
-T.createDraft.bind(T);
-T.finishDraft.bind(T);
-var Nt = (e, t, r) => {
+k.setAutoFreeze.bind(k);
+k.setUseStrictShallowCopy.bind(k);
+k.applyPatches.bind(k);
+k.createDraft.bind(k);
+k.finishDraft.bind(k);
+var vt = (e, t, r) => {
   if (t.length === 1 && t[0] === r) {
     let n = !1;
     try {
@@ -824,7 +729,7 @@ Ensure transformation logic is in the result function, and extraction logic is i
       );
     }
   }
-}, vt = (e, t, r) => {
+}, Nt = (e, t, r) => {
   const { memoize: n, memoizeOptions: o } = t, { inputSelectorResults: i, inputSelectorResultsCopy: s } = e, c = n(() => ({}), ...o);
   if (!(c.apply(null, i) === c.apply(null, s))) {
     let f;
@@ -858,7 +763,7 @@ function St(e, t = `expected an object, instead received ${typeof e}`) {
   if (typeof e != "object")
     throw new TypeError(t);
 }
-function kt(e, t = "expected all items to be functions, instead received the following types: ") {
+function Tt(e, t = "expected all items to be functions, instead received the following types: ") {
   if (!e.every((r) => typeof r == "function")) {
     const r = e.map(
       (n) => typeof n == "function" ? `function ${n.name || "unnamed"}()` : typeof n
@@ -866,15 +771,15 @@ function kt(e, t = "expected all items to be functions, instead received the fol
     throw new TypeError(`${t}[${r}]`);
   }
 }
-var ve = (e) => Array.isArray(e) ? e : [e];
-function Tt(e) {
+var De = (e) => Array.isArray(e) ? e : [e];
+function kt(e) {
   const t = Array.isArray(e[0]) ? e[0] : e;
-  return kt(
+  return Tt(
     t,
     "createSelector expects all input-selectors to be functions, but received the following types: "
   ), t;
 }
-function Oe(e, t) {
+function Se(e, t) {
   const r = [], { length: n } = e;
   for (let o = 0; o < n; o++)
     r.push(e[o].apply(null, t));
@@ -888,11 +793,11 @@ var Ct = (e, t) => {
   return {
     identityFunctionCheck: {
       shouldRun: r === "always" || r === "once" && e,
-      run: Nt
+      run: vt
     },
     inputStabilityCheck: {
       shouldRun: n === "always" || n === "once" && e,
-      run: vt
+      run: Nt
     }
   };
 }, Rt = class {
@@ -902,8 +807,8 @@ var Ct = (e, t) => {
   deref() {
     return this.value;
   }
-}, At = typeof WeakRef < "u" ? WeakRef : Rt, It = 0, De = 1;
-function B() {
+}, At = typeof WeakRef < "u" ? WeakRef : Rt, It = 0, Te = 1;
+function K() {
   return {
     s: It,
     v: void 0,
@@ -911,8 +816,8 @@ function B() {
     p: null
   };
 }
-function he(e, t = {}) {
-  let r = B();
+function me(e, t = {}) {
+  let r = K();
   const { resultEqualityCheck: n } = t;
   let o, i = 0;
   function s() {
@@ -925,29 +830,29 @@ function he(e, t = {}) {
         let b = c.o;
         b === null && (c.o = b = /* @__PURE__ */ new WeakMap());
         const p = b.get(y);
-        p === void 0 ? (c = B(), b.set(y, c)) : c = p;
+        p === void 0 ? (c = K(), b.set(y, c)) : c = p;
       } else {
         let b = c.p;
         b === null && (c.p = b = /* @__PURE__ */ new Map());
         const p = b.get(y);
-        p === void 0 ? (c = B(), b.set(y, c)) : c = p;
+        p === void 0 ? (c = K(), b.set(y, c)) : c = p;
       }
     }
     const f = c;
     let a;
-    if (c.s === De ? a = c.v : (a = e.apply(null, arguments), i++), f.s = De, n) {
+    if (c.s === Te ? a = c.v : (a = e.apply(null, arguments), i++), f.s = Te, n) {
       const d = ((l = o == null ? void 0 : o.deref) == null ? void 0 : l.call(o)) ?? o;
       d != null && n(d, a) && (a = d, i !== 0 && i--), o = typeof a == "object" && a !== null || typeof a == "function" ? new At(a) : a;
     }
     return f.v = a, a;
   }
   return s.clearCache = () => {
-    r = B(), s.resetResultsCount();
+    r = K(), s.resetResultsCount();
   }, s.resultsCount = () => i, s.resetResultsCount = () => {
     i = 0;
   }, s;
 }
-function Ue(e, ...t) {
+function Fe(e, ...t) {
   const r = typeof e == "function" ? {
     memoize: e,
     memoizeOptions: t
@@ -963,35 +868,35 @@ function Ue(e, ...t) {
     }, {
       memoize: l,
       memoizeOptions: d = [],
-      argsMemoize: h = he,
+      argsMemoize: h = me,
       argsMemoizeOptions: y = [],
       devModeChecks: b = {}
-    } = a, p = ve(d), _ = ve(y), g = Tt(o), m = l(function() {
+    } = a, p = De(d), _ = De(y), g = kt(o), m = l(function() {
       return i++, f.apply(
         null,
         arguments
       );
     }, ...p);
     let E = !0;
-    const N = h(function() {
+    const v = h(function() {
       s++;
-      const S = Oe(
+      const S = Se(
         g,
         arguments
       );
       if (c = m.apply(null, S), process.env.NODE_ENV !== "production") {
-        const { identityFunctionCheck: v, inputStabilityCheck: z } = Ct(E, b);
-        if (v.shouldRun && v.run(
+        const { identityFunctionCheck: N, inputStabilityCheck: z } = Ct(E, b);
+        if (N.shouldRun && N.run(
           f,
           S,
           c
         ), z.shouldRun) {
-          const te = Oe(
+          const ne = Se(
             g,
             arguments
           );
           z.run(
-            { inputSelectorResults: S, inputSelectorResultsCopy: te },
+            { inputSelectorResults: S, inputSelectorResultsCopy: ne },
             { memoize: l, memoizeOptions: p },
             arguments
           );
@@ -1000,7 +905,7 @@ function Ue(e, ...t) {
       }
       return c;
     }, ..._);
-    return Object.assign(N, {
+    return Object.assign(v, {
       resultFunc: f,
       memoizedResultFunc: m,
       dependencies: g,
@@ -1021,7 +926,7 @@ function Ue(e, ...t) {
     withTypes: () => n
   }), n;
 }
-var Mt = /* @__PURE__ */ Ue(he), xt = Object.assign(
+var Mt = /* @__PURE__ */ Fe(me), xt = Object.assign(
   (e, t = Mt) => {
     St(
       e,
@@ -1037,22 +942,22 @@ var Mt = /* @__PURE__ */ Ue(he), xt = Object.assign(
   },
   { withTypes: () => xt }
 );
-function Le(e) {
+function Ue(e) {
   return ({ dispatch: r, getState: n }) => (o) => (i) => typeof i == "function" ? i(r, n, e) : o(i);
 }
-var jt = Le(), Pt = Le, $t = (...e) => {
-  const t = Ue(...e), r = Object.assign((...n) => {
-    const o = t(...n), i = (s, ...c) => o(M(s) ? Ve(s) : s, ...c);
+var jt = Ue(), Pt = Ue, $t = (...e) => {
+  const t = Fe(...e), r = Object.assign((...n) => {
+    const o = t(...n), i = (s, ...c) => o(M(s) ? $e(s) : s, ...c);
     return Object.assign(i, o), i;
   }, {
     withTypes: () => r
   });
   return r;
 };
-$t(he);
+$t(me);
 var Vt = typeof window < "u" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : function() {
   if (arguments.length !== 0)
-    return typeof arguments[0] == "object" ? Y : Y.apply(null, arguments);
+    return typeof arguments[0] == "object" ? H : H.apply(null, arguments);
 }, zt = (e) => e && typeof e.match == "function";
 function V(e, t) {
   function r(...n) {
@@ -1076,7 +981,7 @@ function V(e, t) {
       payload: n[0]
     };
   }
-  return r.toString = () => `${e}`, r.type = e, r.match = (n) => Ie(n) && n.type === e, r;
+  return r.toString = () => `${e}`, r.type = e, r.match = (n) => Ae(n) && n.type === e, r;
 }
 function Ft(e) {
   return typeof e == "function" && "type" in e && // hasMatchFunction only wants Matchers but I don't see the point in rewriting it
@@ -1095,7 +1000,7 @@ function Lt(e = {}) {
   } = e;
   return () => (r) => (n) => (t(n) && console.warn(Ut(n.type)), r(n));
 }
-function We(e, t) {
+function Le(e, t) {
   let r = 0;
   return {
     measureTime(n) {
@@ -1114,7 +1019,7 @@ It is disabled in production builds, so you don't need to worry about that.`);
     }
   };
 }
-var Be = class F extends Array {
+var We = class F extends Array {
   constructor(...t) {
     super(...t), Object.setPrototypeOf(this, F.prototype);
   }
@@ -1128,11 +1033,11 @@ var Be = class F extends Array {
     return t.length === 1 && Array.isArray(t[0]) ? new F(...t[0].concat(this)) : new F(...t.concat(this));
   }
 };
-function Se(e) {
-  return R(e) ? Fe(e, () => {
+function ke(e) {
+  return R(e) ? ze(e, () => {
   }) : e;
 }
-function ke(e, t, r) {
+function Ce(e, t, r) {
   if (e.has(t)) {
     let o = e.get(t);
     return r.update && (o = r.update(o, t, e), e.set(t, o)), o;
@@ -1146,14 +1051,14 @@ function Wt(e) {
   return typeof e != "object" || e == null || Object.isFrozen(e);
 }
 function Bt(e, t, r) {
-  const n = Ke(e, t, r);
+  const n = Be(e, t, r);
   return {
     detectMutations() {
-      return qe(e, t, n, r);
+      return Ke(e, t, n, r);
     }
   };
 }
-function Ke(e, t = [], r, n = "", o = /* @__PURE__ */ new Set()) {
+function Be(e, t = [], r, n = "", o = /* @__PURE__ */ new Set()) {
   const i = {
     value: r
   };
@@ -1161,12 +1066,12 @@ function Ke(e, t = [], r, n = "", o = /* @__PURE__ */ new Set()) {
     o.add(r), i.children = {};
     for (const s in r) {
       const c = n ? n + "." + s : s;
-      t.length && t.indexOf(c) !== -1 || (i.children[s] = Ke(e, t, r[s], c));
+      t.length && t.indexOf(c) !== -1 || (i.children[s] = Be(e, t, r[s], c));
     }
   }
   return i;
 }
-function qe(e, t = [], r, n, o = !1, i = "") {
+function Ke(e, t = [], r, n, o = !1, i = "") {
   const s = r ? r.value : void 0, c = s === n;
   if (o && !c && !Number.isNaN(n))
     return {
@@ -1187,7 +1092,7 @@ function qe(e, t = [], r, n, o = !1, i = "") {
     const l = i ? i + "." + a : a;
     if (f && t.some((y) => y instanceof RegExp ? y.test(l) : l === y))
       continue;
-    const d = qe(e, t, r.children[a], n[a], c, l);
+    const d = Ke(e, t, r.children[a], n[a], c, l);
     if (d.wasMutated)
       return d;
   }
@@ -1224,7 +1129,7 @@ function Kt(e = {}) {
     }) => {
       let u = c(), f = s(u), a;
       return (l) => (d) => {
-        const h = We(i, "ImmutableStateInvariantMiddleware");
+        const h = Le(i, "ImmutableStateInvariantMiddleware");
         h.measureTime(() => {
           if (u = c(), a = f.detectMutations(), f = s(u), a.wasMutated)
             throw new Error(process.env.NODE_ENV === "production" ? w(19) : `A state mutation was detected between dispatches, in the path '${a.path || ""}'.  This may cause incorrect behavior. (https://redux.js.org/style-guide/style-guide#do-not-mutate-state)`);
@@ -1238,11 +1143,11 @@ function Kt(e = {}) {
     };
   }
 }
-function Ye(e) {
+function qe(e) {
   const t = typeof e;
-  return e == null || t === "string" || t === "boolean" || t === "number" || Array.isArray(e) || W(e);
+  return e == null || t === "string" || t === "boolean" || t === "number" || Array.isArray(e) || B(e);
 }
-function le(e, t = "", r = Ye, n, o = [], i) {
+function pe(e, t = "", r = qe, n, o = [], i) {
   let s;
   if (!r(e))
     return {
@@ -1260,17 +1165,17 @@ function le(e, t = "", r = Ye, n, o = [], i) {
           keyPath: l,
           value: a
         };
-      if (typeof a == "object" && (s = le(a, l, r, n, o, i), s))
+      if (typeof a == "object" && (s = pe(a, l, r, n, o, i), s))
         return s;
     }
   }
-  return i && Xe(e) && i.add(e), !1;
+  return i && Ye(e) && i.add(e), !1;
 }
-function Xe(e) {
+function Ye(e) {
   if (!Object.isFrozen(e))
     return !1;
   for (const t of Object.values(e))
-    if (!(typeof t != "object" || t === null) && !Xe(t))
+    if (!(typeof t != "object" || t === null) && !Ye(t))
       return !1;
   return !0;
 }
@@ -1279,7 +1184,7 @@ function qt(e = {}) {
     return () => (t) => (r) => t(r);
   {
     const {
-      isSerializable: t = Ye,
+      isSerializable: t = qe,
       getEntries: r,
       ignoredActions: n = [],
       ignoredActionPaths: o = ["meta.arg", "meta.baseQueryMeta"],
@@ -1290,11 +1195,11 @@ function qt(e = {}) {
       disableCache: f = !1
     } = e, a = !f && WeakSet ? /* @__PURE__ */ new WeakSet() : void 0;
     return (l) => (d) => (h) => {
-      if (!Ie(h))
+      if (!Ae(h))
         return d(h);
-      const y = d(h), b = We(s, "SerializableStateInvariantMiddleware");
+      const y = d(h), b = Le(s, "SerializableStateInvariantMiddleware");
       return !u && !(n.length && n.indexOf(h.type) !== -1) && b.measureTime(() => {
-        const p = le(h, "", t, r, o, a);
+        const p = pe(h, "", t, r, o, a);
         if (p) {
           const {
             keyPath: _,
@@ -1306,7 +1211,7 @@ Take a look at the logic that dispatched this action: `, h, `
 (To allow non-serializable values see: https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data)`);
         }
       }), c || (b.measureTime(() => {
-        const p = l.getState(), _ = le(p, "", t, r, i, a);
+        const p = l.getState(), _ = pe(p, "", t, r, i, a);
         if (_) {
           const {
             keyPath: g,
@@ -1320,7 +1225,7 @@ Take a look at the reducer(s) handling this action type: ${h.type}.
     };
   }
 }
-function K(e) {
+function q(e) {
   return typeof e == "boolean";
 }
 var Yt = () => function(t) {
@@ -1330,30 +1235,30 @@ var Yt = () => function(t) {
     serializableCheck: o = !0,
     actionCreatorCheck: i = !0
   } = t ?? {};
-  let s = new Be();
-  if (r && (K(r) ? s.push(jt) : s.push(Pt(r.extraArgument))), process.env.NODE_ENV !== "production") {
+  let s = new We();
+  if (r && (q(r) ? s.push(jt) : s.push(Pt(r.extraArgument))), process.env.NODE_ENV !== "production") {
     if (n) {
       let c = {};
-      K(n) || (c = n), s.unshift(Kt(c));
+      q(n) || (c = n), s.unshift(Kt(c));
     }
     if (o) {
       let c = {};
-      K(o) || (c = o), s.push(qt(c));
+      q(o) || (c = o), s.push(qt(c));
     }
     if (i) {
       let c = {};
-      K(i) || (c = i), s.unshift(Lt(c));
+      q(i) || (c = i), s.unshift(Lt(c));
     }
   }
   return s;
-}, Xt = "RTK_autoBatch", Ge = (e) => (t) => {
+}, Ht = "RTK_autoBatch", He = (e) => (t) => {
   setTimeout(t, e);
-}, Gt = typeof window < "u" && window.requestAnimationFrame ? window.requestAnimationFrame : Ge(10), Ht = (e = {
+}, Xt = typeof window < "u" && window.requestAnimationFrame ? window.requestAnimationFrame : He(10), Gt = (e = {
   type: "raf"
 }) => (t) => (...r) => {
   const n = t(...r);
   let o = !0, i = !1, s = !1;
-  const c = /* @__PURE__ */ new Set(), u = e.type === "tick" ? queueMicrotask : e.type === "raf" ? Gt : e.type === "callback" ? e.queueNotification : Ge(e.timeout), f = () => {
+  const c = /* @__PURE__ */ new Set(), u = e.type === "tick" ? queueMicrotask : e.type === "raf" ? Xt : e.type === "callback" ? e.queueNotification : He(e.timeout), f = () => {
     s = !1, i && (i = !1, c.forEach((a) => a()));
   };
   return Object.assign({}, n, {
@@ -1370,7 +1275,7 @@ var Yt = () => function(t) {
     dispatch(a) {
       var l;
       try {
-        return o = !((l = a == null ? void 0 : a.meta) != null && l[Xt]), i = !o, i && (s || (s = !0, u(f))), n.dispatch(a);
+        return o = !((l = a == null ? void 0 : a.meta) != null && l[Ht]), i = !o, i && (s || (s = !0, u(f))), n.dispatch(a);
       } finally {
         o = !0;
       }
@@ -1380,8 +1285,8 @@ var Yt = () => function(t) {
   const {
     autoBatch: n = !0
   } = r ?? {};
-  let o = new Be(e);
-  return n && o.push(Ht(typeof n == "object" ? n : void 0)), o;
+  let o = new We(e);
+  return n && o.push(Gt(typeof n == "object" ? n : void 0)), o;
 }, A = process.env.NODE_ENV === "production";
 function Jt(e) {
   const t = Yt(), {
@@ -1394,7 +1299,7 @@ function Jt(e) {
   let c;
   if (typeof r == "function")
     c = r;
-  else if (W(r))
+  else if (B(r))
     c = ft(r);
   else
     throw new Error(process.env.NODE_ENV === "production" ? w(1) : "`reducer` is a required argument, and must be a function or an object of functions that can be passed to combineReducers");
@@ -1408,7 +1313,7 @@ function Jt(e) {
     u = t();
   if (!A && u.some((y) => typeof y != "function"))
     throw new Error(process.env.NODE_ENV === "production" ? w(4) : "each middleware provided to configureStore must be a function");
-  let f = Y;
+  let f = H;
   o && (f = Vt({
     // Enable capture of stack traces for dispatched Redux actions
     trace: !A,
@@ -1424,9 +1329,9 @@ function Jt(e) {
     throw new Error(process.env.NODE_ENV === "production" ? w(7) : "each enhancer provided to configureStore must be a function");
   !A && u.length && !d.includes(a) && console.error("middlewares were provided, but middleware enhancer was not included in final enhancers - make sure to call `getDefaultEnhancers`");
   const h = f(...d);
-  return Ae(c, i, h);
+  return Re(c, i, h);
 }
-function He(e) {
+function Xe(e) {
   const t = {}, r = [];
   let n;
   const o = {
@@ -1466,11 +1371,11 @@ function Zt(e) {
 function er(e, t) {
   if (process.env.NODE_ENV !== "production" && typeof t == "object")
     throw new Error(process.env.NODE_ENV === "production" ? w(8) : "The object notation for `createReducer` has been removed. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createReducer");
-  let [r, n, o] = He(t), i;
+  let [r, n, o] = Xe(t), i;
   if (Zt(e))
-    i = () => Se(e());
+    i = () => ke(e());
   else {
-    const c = Se(e);
+    const c = ke(e);
     i = () => c;
   }
   function s(c = i(), u) {
@@ -1486,7 +1391,7 @@ function er(e, t) {
           return h === void 0 ? a : h;
         } else {
           if (R(a))
-            return Fe(a, (d) => l(d, u));
+            return ze(a, (d) => l(d, u));
           {
             const d = l(a, u);
             if (d === void 0) {
@@ -1531,12 +1436,12 @@ function ir({
       sliceMatchers: []
     }, a = {
       addCase(m, E) {
-        const N = typeof m == "string" ? m : m.type;
-        if (!N)
+        const v = typeof m == "string" ? m : m.type;
+        if (!v)
           throw new Error(process.env.NODE_ENV === "production" ? w(12) : "`context.addCase` cannot be called with an empty action type");
-        if (N in f.sliceCaseReducersByType)
-          throw new Error(process.env.NODE_ENV === "production" ? w(13) : "`context.addCase` cannot be called with two reducers for the same action type: " + N);
-        return f.sliceCaseReducersByType[N] = E, a;
+        if (v in f.sliceCaseReducersByType)
+          throw new Error(process.env.NODE_ENV === "production" ? w(13) : "`context.addCase` cannot be called with two reducers for the same action type: " + v);
+        return f.sliceCaseReducersByType[v] = E, a;
       },
       addMatcher(m, E) {
         return f.sliceMatchers.push({
@@ -1552,28 +1457,28 @@ function ir({
       }
     };
     u.forEach((m) => {
-      const E = c[m], N = {
+      const E = c[m], v = {
         reducerName: m,
         type: or(i, m),
         createNotation: typeof o.reducers == "function"
       };
-      fr(E) ? dr(N, E, a, t) : ur(N, E, a);
+      fr(E) ? dr(v, E, a, t) : ur(v, E, a);
     });
     function l() {
       if (process.env.NODE_ENV !== "production" && typeof o.extraReducers == "object")
         throw new Error(process.env.NODE_ENV === "production" ? w(14) : "The object notation for `createSlice.extraReducers` has been removed. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createSlice");
-      const [m = {}, E = [], N = void 0] = typeof o.extraReducers == "function" ? He(o.extraReducers) : [o.extraReducers], C = {
+      const [m = {}, E = [], v = void 0] = typeof o.extraReducers == "function" ? Xe(o.extraReducers) : [o.extraReducers], C = {
         ...m,
         ...f.sliceCaseReducersByType
       };
       return er(o.initialState, (S) => {
-        for (let v in C)
-          S.addCase(v, C[v]);
-        for (let v of f.sliceMatchers)
-          S.addMatcher(v.matcher, v.reducer);
-        for (let v of E)
-          S.addMatcher(v.matcher, v.reducer);
-        N && S.addDefaultCase(N);
+        for (let N in C)
+          S.addCase(N, C[N]);
+        for (let N of f.sliceMatchers)
+          S.addMatcher(N.matcher, N.reducer);
+        for (let N of E)
+          S.addMatcher(N.matcher, N.reducer);
+        v && S.addDefaultCase(v);
       });
     }
     const d = (m) => m, h = /* @__PURE__ */ new Map();
@@ -1585,25 +1490,25 @@ function ir({
       return y || (y = l()), y.getInitialState();
     }
     function _(m, E = !1) {
-      function N(S) {
-        let v = S[m];
-        if (typeof v > "u") {
+      function v(S) {
+        let N = S[m];
+        if (typeof N > "u") {
           if (E)
-            v = p();
+            N = p();
           else if (process.env.NODE_ENV !== "production")
             throw new Error(process.env.NODE_ENV === "production" ? w(15) : "selectSlice returned undefined for an uninjected slice reducer");
         }
-        return v;
+        return N;
       }
       function C(S = d) {
-        const v = ke(h, E, {
+        const N = Ce(h, E, {
           insert: () => /* @__PURE__ */ new WeakMap()
         });
-        return ke(v, S, {
+        return Ce(N, S, {
           insert: () => {
             const z = {};
-            for (const [te, Je] of Object.entries(o.selectors ?? {}))
-              z[te] = sr(Je, S, p, E);
+            for (const [ne, et] of Object.entries(o.selectors ?? {}))
+              z[ne] = sr(et, S, p, E);
             return z;
           }
         });
@@ -1612,9 +1517,9 @@ function ir({
         reducerPath: m,
         getSelectors: C,
         get selectors() {
-          return C(N);
+          return C(v);
         },
-        selectSlice: N
+        selectSlice: v
       };
     }
     const g = {
@@ -1626,13 +1531,13 @@ function ir({
       ..._(s),
       injectInto(m, {
         reducerPath: E,
-        ...N
+        ...v
       } = {}) {
         const C = E ?? s;
         return m.inject({
           reducerPath: C,
           reducer: b
-        }, N), {
+        }, v), {
           ...g,
           ..._(C, !0)
         };
@@ -1721,18 +1626,18 @@ function dr({
     options: a
   } = r, l = o(e, i, a);
   n.exposeAction(t, l), s && n.addCase(l.fulfilled, s), c && n.addCase(l.pending, c), u && n.addCase(l.rejected, u), f && n.addMatcher(l.settled, f), n.exposeCaseReducer(t, {
-    fulfilled: s || q,
-    pending: c || q,
-    rejected: u || q,
-    settled: f || q
+    fulfilled: s || Y,
+    pending: c || Y,
+    rejected: u || Y,
+    settled: f || Y
   });
 }
-function q() {
+function Y() {
 }
 var pr = (e, t) => {
   if (typeof e != "function")
     throw new Error(process.env.NODE_ENV === "production" ? w(32) : `${t} is not a function`);
-}, ye = "listenerMiddleware", hr = (e) => {
+}, we = "listenerMiddleware", hr = (e) => {
   let {
     type: t,
     actionCreator: r,
@@ -1771,17 +1676,112 @@ var pr = (e, t) => {
   };
 }, {
   withTypes: () => yr
-}), mr = Object.assign(V(`${ye}/add`), {
+}), mr = Object.assign(V(`${we}/add`), {
   withTypes: () => mr
 });
-V(`${ye}/removeAll`);
-var wr = Object.assign(V(`${ye}/remove`), {
+V(`${we}/removeAll`);
+var wr = Object.assign(V(`${we}/remove`), {
   withTypes: () => wr
 });
 function w(e) {
   return `Minified Redux Toolkit error #${e}; visit https://redux-toolkit.js.org/Errors?code=${e} for the full message or use the non-minified dev environment for full errors. `;
 }
-const Qe = cr({
+function Sr(e, t = null) {
+  let r = Math.floor(Math.random() * 100), n = typeof t == "string" ? Er(t) : t;
+  return {
+    ["$$@@@@__upsert_hook_" + r]: {
+      value: e,
+      index: n,
+      isFunction: typeof e == "function"
+    }
+  };
+}
+function Er(e) {
+  return e.replace(/[\[\]'"]/g, "").split(".");
+}
+function Ge({ obj: e }, t, r = [], n = !1) {
+  let o = [];
+  for (let i in e) {
+    let s = e[i];
+    if (i.includes(t) && (s ?? !1))
+      o.push({
+        index: [...r, ...s.index ?? []],
+        value: s.value,
+        isFunction: s.isFunction
+      });
+    else if (typeof s == "object") {
+      const c = Ge(
+        { obj: s },
+        t,
+        [...r, i],
+        !0
+      );
+      o = o.concat(c.obj);
+    }
+  }
+  return n ? { obj: o } : {
+    result: o
+  };
+}
+function Qe(e, t, r, n = !1, o) {
+  if (t.length <= 1) {
+    if (t.length > 0)
+      try {
+        return e[t[0]] = n ? r(e[t[0] ?? t]) : r, e;
+      } catch {
+        throw `Unable to set value at index [${t}], ERROR: SETTER_FAILED`;
+      }
+    if (e === null || typeof e != "object")
+      throw Error(
+        "Initial value is not a object, ERROR: INITITAL_VALUE_PARSE_FAILED"
+      );
+    let s = n ? r(e) : r;
+    if (o.returnType == "array")
+      return e.push(s), e;
+    if (typeof s != "object")
+      throw `Only object or array can be setted as a default value. Value given ${s}.`;
+    for (const c of Object.keys(s))
+      e[c] = s[c];
+    return e;
+  }
+  let i = (e ?? [])[t[0]] ?? !1;
+  if (!i) {
+    let s = Je(t, r, n);
+    try {
+      e[t[0]] = s;
+    } catch {
+      throw `Unable to set value at index [${t}], ERROR: SETTER_FAILED`;
+    }
+    return e;
+  }
+  return t.shift(), Qe(i, t, r, n, o);
+}
+function Je(e, t, r = !1) {
+  let n = [...e], o;
+  return n.length == 1 ? o = r ? t(null) : t : (o = {}, n.shift(), o[n[0]] = Je(n, t, r)), o;
+}
+function br(e, t, r = { returnType: "object" }) {
+  Array.isArray(e) && (r.returnType = "array");
+  let { result: n } = Ge({ obj: t }, "$$@@@@__upsert_hook");
+  for (let o = 0; o < n.length; o++) {
+    let i = n[o];
+    Qe(
+      e,
+      i.index,
+      i.value,
+      i.isFunction,
+      r
+    );
+  }
+  try {
+    return ((r == null ? void 0 : r.returnType) ?? "object") == "object" ? { ...e } : [...e];
+  } catch {
+    throw Error(
+      `Cannot return value as returnType '${r.returnType}'. Please try '${r.returnType == "array" ? "OBJECT" : "ARRAY"}' returnType, ERROR: RETURN_ERROR.`
+    );
+  }
+}
+const Ze = cr({
   name: "StateReducer",
   initialState: {},
   reducers: {
@@ -1803,7 +1803,7 @@ const Qe = cr({
       let { data: r, active_state: n, config: o } = t.payload;
       (e[n] ?? null) === null && (e[n] = {});
       let i = e[n];
-      e[n] = tt(i, r, o ?? {});
+      e[n] = br(i, r, o ?? {});
     },
     set: (e, t) => {
       Array.isArray(t.payload.data) ? e[t.payload.state] = [
@@ -1815,15 +1815,61 @@ const Qe = cr({
       };
     }
   }
-}), { ...Nr } = Qe.actions, Er = Qe.reducer, vr = Jt({
+}), { ...re } = Ze.actions, _r = Ze.reducer, W = Jt({
   reducer: {
-    This: Er
+    This: _r
   }
 });
+function gr(e, t) {
+  return function(n) {
+    let o = typeof n == "function" ? n(W.getState().This[e]) : n;
+    return t(
+      re.update({
+        data: o,
+        state: e
+      })
+    ), W.getState().This[e];
+  };
+}
+function vr(e, t) {
+  return function(n) {
+    return t(
+      re.update({
+        data: n,
+        state: e
+      })
+    ), W.getState().This[e];
+  };
+}
+function Nr(e, t) {
+  return function(n, o) {
+    return t(
+      re.upsert({
+        data: n,
+        active_state: e,
+        config: o ?? {}
+      })
+    ), W.getState().This[e];
+  };
+}
+const Tr = (e, t) => (r, n) => (!t[r] && n && e(
+  re.update({
+    data: n,
+    state: r
+  })
+), {
+  update: gr(r, e),
+  append: vr(r, e),
+  upsert: Nr(r, e),
+  dispatcher: e,
+  This: t[r] ?? null,
+  get: () => W.getState().This[r]
+});
 export {
-  Nr as S,
-  _r as T,
-  vr as _,
-  gr as p
+  Sr as R,
+  re as S,
+  Dr as T,
+  Tr as _,
+  W as a
 };
-//# sourceMappingURL=store-DeN8Hqbh.js.map
+//# sourceMappingURL=Dispatcher-Bt6XnKOw.js.map

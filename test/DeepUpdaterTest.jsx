@@ -3,15 +3,26 @@ import { getThis, useThis } from "../index";
 import { set } from "../index";
 
 export default function DeepUpdaterTest() {
-  let { This, update, upsert } = useThis("MY_STATE", { g: {} });
+  let { This, update, upsert, get } = useThis("MY_STATE", ["g", "gr"]);
 
   useEffect(() => {
     // console.log(This);
     // debugger;
-    console.log(upsert(set({ gR: "g" }, "g.gr")));
-  }, []);
+    // console.log(upsert(set({ gR: "g" }, "g.gr")));
 
-  console.log(This);
+    console.log(get());
+  }, [get()]);
 
-  return <></>;
+  return (
+    <>
+      <button
+        onClick={() => {
+          upsert(set("grr", [3]));
+          console.log(get());
+        }}
+      >
+        GREEN
+      </button>
+    </>
+  );
 }

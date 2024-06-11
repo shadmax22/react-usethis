@@ -1,28 +1,40 @@
-import { useContext as r } from "react";
-import { T as o, _ as a, S as n } from "./store-DeN8Hqbh.js";
-import { p as l } from "./store-DeN8Hqbh.js";
-function p(e, t) {
-  return r(o)(e, t);
+import { useContext as s } from "react";
+import { _ as u, a as n, T as i, S as r } from "./Dispatcher-Bt6XnKOw.js";
+import { R as x } from "./Dispatcher-Bt6XnKOw.js";
+function o(e, t) {
+  return u(n.dispatch, n.getState())(
+    e,
+    t
+  );
 }
-function c(e, t) {
+function l(e, t) {
+  let a;
+  try {
+    a = s(i);
+  } catch {
+    a = null;
+  }
+  return a === null ? o(e, t) : a(e, t);
+}
+function f(e, t) {
   if (((t == null ? void 0 : t.data) ?? null) === null)
-    return a.getState().This[e] ?? null;
-  const s = {
-    update: n.update({
+    return n.getState().This[e] ?? null;
+  const a = {
+    update: r.update({
       data: (t == null ? void 0 : t.data) ?? {},
       state: e
     }),
-    upsert: n.upsert({
+    upsert: r.upsert({
       data: (t == null ? void 0 : t.data) ?? {},
       active_state: e,
       config: t == null ? void 0 : t.config
     })
   };
-  return a.dispatch(s[(t == null ? void 0 : t.type) ?? "upsert"]), a.getState().This[e];
+  return n.dispatch(a[(t == null ? void 0 : t.type) ?? "upsert"]), n.getState().This[e];
 }
 export {
-  c as getThis,
-  l as set,
-  p as useThis
+  f as getThis,
+  x as set,
+  l as useThis
 };
 //# sourceMappingURL=index.js.map
