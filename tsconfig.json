@@ -21,7 +21,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-     "declarationDir": "./dist/types",
+    "declarationDir": "./dist/types",
     "declaration": true
   },
     "include": ["src/**/*", "index.ts", "test_funs/**/*.ts", "test_funs/useThis.test.tsx"],

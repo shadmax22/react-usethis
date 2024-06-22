@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { upsert } from "js-upsert";
 export const StateReducer = createSlice({
   name: "StateReducer",
   initialState: {},
@@ -28,13 +27,12 @@ export const StateReducer = createSlice({
     },
     upsert: (state: any, action) => {
       // index = greeen.k.someValue.value
-      let { data, active_state, config } = action.payload;
+      let { data, active_state } = action.payload;
 
       if ((state[active_state] ?? null) === null) state[active_state] = {};
 
-      let OLD_STATE = state[active_state];
-
-      state[active_state] = upsert(OLD_STATE, data, config ?? {});
+      state[active_state] = data;
+      return state;
     },
 
     set: (state: any, action) => {

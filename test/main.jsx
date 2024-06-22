@@ -6,7 +6,8 @@ import DeepUpdaterTest from "./DeepUpdaterTest";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <DeepUpdaterTest />
-    <ThisProvider></ThisProvider>
+    <ThisProvider>
+      <DeepUpdaterTest />
+    </ThisProvider>
   </React.StrictMode>
 );

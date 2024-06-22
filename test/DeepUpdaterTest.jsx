@@ -3,7 +3,13 @@ import { getThis, useThis } from "../index";
 import { set } from "../index";
 
 export default function DeepUpdaterTest() {
-  let { This, update, upsert, get } = useThis("MY_STATE", ["g", "gr"]);
+  let { This, update, upsert, get } = useThis("MY_STATE", {
+    k1: {
+      k2: {
+        k3: "hello",
+      },
+    },
+  });
 
   useEffect(() => {
     // console.log(This);
@@ -17,11 +23,11 @@ export default function DeepUpdaterTest() {
     <>
       <button
         onClick={() => {
-          upsert(set("grr", [3]));
+          upsert(set("It works", ["k1", "k2", "k3"]));
           console.log(get());
         }}
       >
-        GREEN
+        GREEN{get().k1.k2.k3}
       </button>
     </>
   );

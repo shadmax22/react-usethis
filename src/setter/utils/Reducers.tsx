@@ -1,5 +1,6 @@
 import { StateHandler } from "../../redux/slices/StateReducer";
 import _MAINSTORE from "../../redux/store";
+import { upsert as up } from "js-upsert";
 
 export function Updater(StateName: string, dispatcher: any) {
   return function update(data: any) {
@@ -39,7 +40,11 @@ export function Upsert(StateName: string, dispatcher: any) {
   ) {
     dispatcher(
       StateHandler.upsert({
-        data: data,
+        data: up(
+          structuredClone(_MAINSTORE.getState().This[StateName]),
+          data,
+          config ?? {}
+        ),
         active_state: StateName,
         config: config ?? {},
       })
