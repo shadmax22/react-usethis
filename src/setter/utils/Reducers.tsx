@@ -41,7 +41,7 @@ export function Upsert(StateName: string, dispatcher: any) {
     dispatcher(
       StateHandler.upsert({
         data: up(
-          structuredClone(_MAINSTORE.getState().This[StateName]),
+          structuredClone(_MAINSTORE?.getState()?.This[StateName] ?? {}),
           data,
           config ?? {}
         ),
