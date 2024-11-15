@@ -1,5 +1,6 @@
-export { useThis } from "./src/useThis/useThis";
-export { set } from "js-upsert";
-export { getThis } from "./src/getThis/getThis";
+export { set } from "./src/setters/set";
 
-export { setFun } from "./src/setFun/setFun";
+export { getThis } from "./src/getThis/getThis";
+export { useThis } from "./src/useThis/useThis";
+
+export { setFun } from "./src/setters/setFun";

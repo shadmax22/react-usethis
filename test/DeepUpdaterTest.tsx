@@ -1,9 +1,13 @@
-import { useEffect } from "react";
-import { getThis, setFun, useThis } from "../index";
-import { set } from "../index";
+import { set, useThis } from "../index";
 
 export default function DeepUpdaterTest() {
-  let s = useThis("MY_STATE");
+  let s = useThis("MY_STATE", { gr: "gr", gg: "g" });
+
+  let xy = s.upsert({
+    gr: {
+      g: set("bleu", ["g"]),
+    },
+  });
 
   let x = "pink";
 
@@ -126,14 +130,9 @@ export default function DeepUpdaterTest() {
 
   function testFunction2() {
     s.upsert({
-      g: set({
-        green: "green",
-        x: async (g) => {
-          console.log(g);
-          debugger;
-          return g;
-        },
-      }),
+      g: {
+        "$$@@@@__upsert_hook_33": "g",
+      },
     });
   }
 

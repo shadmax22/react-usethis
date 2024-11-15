@@ -4,26 +4,28 @@ import { replaceIdsWithFunctions } from "../utils/functionRetrieval";
 import { Appender, Updater, Upsert } from "./Reducers";
 
 export const useThisDispatcher =
-  (dispatcher: any, stateData: any, info?: { type: string }) =>
-  (StateName: keyof StoreState["This"], defaultValue: any) => {
-    if (!stateData[StateName] && defaultValue) {
+  (dispatcher: any, info?: { type: string }) =>
+  (StateName: string, defaultValue: any) => {
+    const requestedStateName = StateName as keyof StoreState["This"];
+    const state_data = _MAINSTORE.getState()?.This;
+    if (!state_data[requestedStateName] && defaultValue) {
       dispatcher(
         StateHandler.update({
           data: defaultValue,
-          state: StateName,
+          state: requestedStateName,
         })
       );
     }
 
     return {
-      update: Updater(StateName, dispatcher),
-      append: Appender(StateName, dispatcher),
-      upsert: Upsert(StateName, dispatcher),
+      update: Updater(requestedStateName, dispatcher),
+      append: Appender(requestedStateName, dispatcher),
+      upsert: Upsert(requestedStateName, dispatcher),
       dispatcher: dispatcher,
-      This: replaceIdsWithFunctions(stateData[StateName] ?? null),
-      get: () => _MAINSTORE.getState().This[StateName],
+      This: replaceIdsWithFunctions(state_data[requestedStateName] ?? null),
+      get: () => _MAINSTORE.getState().This[requestedStateName],
       fetch: () =>
-        replaceIdsWithFunctions(_MAINSTORE.getState().This[StateName]),
+        replaceIdsWithFunctions(_MAINSTORE.getState().This[requestedStateName]),
       info,
     };
   };

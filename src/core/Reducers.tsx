@@ -28,9 +28,13 @@ export function Updater(StateName: keyof StoreState["This"], dispatcher: any) {
 
 export function Appender(StateName: keyof StoreState["This"], dispatcher: any) {
   return function append(data: any) {
+    let __DATA =
+      typeof data == "function"
+        ? data(_MAINSTORE.getState().This[StateName])
+        : data;
     dispatcher(
-      StateHandler.update({
-        data: data,
+      StateHandler.append({
+        data: __DATA,
         state: StateName,
       })
     );
@@ -39,25 +43,44 @@ export function Appender(StateName: keyof StoreState["This"], dispatcher: any) {
 }
 
 export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
-  return function upsert(
+  const updater = (
     data: any,
     config?: {
       returnType?: "object" | "array";
     }
-  ) {
+  ) => {
     try {
+      const haystack = Array.isArray(_MAINSTORE?.getState()?.This[StateName])
+        ? [..._MAINSTORE?.getState()?.This[StateName]]
+        : { ...((_MAINSTORE?.getState()?.This[StateName] ?? {}) as object) };
       dispatcher(
         StateHandler.upsert({
-          data: up(
-            structuredClone(_MAINSTORE?.getState()?.This[StateName] ?? {}),
-            data,
-            config ?? {}
-          ),
+          data: up(haystack, data, config ?? {}),
           active_state: StateName,
           config: config ?? {},
         })
       );
     } catch (e) {}
+  };
+  const upsert = (...data: any) => {
+    for (let i of data) {
+      updater(i);
+    }
     return _MAINSTORE.getState().This[StateName];
   };
+
+  upsert.object = (...data: any) => {
+    for (let i of data) {
+      updater(i, { returnType: "object" });
+    }
+    return _MAINSTORE.getState().This[StateName];
+  };
+  upsert.array = (...data: any) => {
+    for (let i of data) {
+      updater(i, { returnType: "array" });
+    }
+    return _MAINSTORE.getState().This[StateName];
+  };
+
+  return upsert;
 }
