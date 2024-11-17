@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, getByTestId } from "@testing-library/react";
-import { MainContainer } from "./MainContainer";
+import { MainContainer } from "./MainContainer.jsx";
 
 describe("App", () => {
   it("useThis Default-Value", () => {

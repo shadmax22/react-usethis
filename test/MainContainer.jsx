@@ -1,5 +1,5 @@
 import { ThisProvider } from "../src/thisProvider";
-import App from "./App.jsx";
+import App from "./App.tsx";
 
 export function MainContainer() {
   return (

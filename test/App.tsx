@@ -2,9 +2,17 @@ import { useEffect, useState } from "react";
 import { setFun, useThis } from "../index";
 import { set } from "../index";
 import "./index.css";
+import React from "react";
 
+type main_schema = {
+  name: string;
+  name2?: string;
+  utwp?: string;
+  utwpFun?: () => void;
+  fun?: () => void;
+};
 export default function App() {
-  let state = useThis("test_state", { name: "John" });
+  let state = useThis<main_schema>("test_state", { name: "John" });
   return (
     <>
       <h1>Test Cases</h1>
@@ -25,26 +33,24 @@ export default function App() {
             });
           }}
         >
-          CLICK ME
+          default-value-replacer CLICK ME
         </button>
         <button
           data-testid={"function-setter"}
           onClick={() => {
             state.upsert({
-              fun: set(
-                setFun(() => {
-                  state.upsert({
-                    name: set("Denver"),
-                  });
-                })
-              ),
+              fun: set.fun(() => {
+                state.upsert({
+                  name: set("Denver"),
+                });
+              }),
             });
           }}
         >
-          CLICK ME
+          function-setter CLICK ME
         </button>
         <button data-testid={"function-runner"} onClick={state.fetch()?.fun}>
-          CLICK ME
+          function-runner CLICK ME
         </button>
         <button
           data-testid={"updater"}
@@ -100,9 +106,9 @@ export default function App() {
       <button
         data-testid={"upserter-utwp-value"}
         onClick={() => {
-          let x = useThis("test_state");
+          let x = useThis<main_schema>("test_state");
 
-          x.upsert(set.append({ utwp: "John" }));
+          x.upsert({ utwp: set("John") });
         }}
       >
         UTWP UPSERT
@@ -110,15 +116,13 @@ export default function App() {
       <button
         data-testid={"upserter-utwp-value-fun"}
         onClick={() => {
-          let x = useThis("test_state");
+          let x = useThis<main_schema>("test_state");
 
-          x.upsert(
-            set.append({
-              utwpFun: set.fun(() => {
-                x.upsert(set.append({ utwp: "Johnx" }));
-              }),
-            })
-          );
+          x.upsert({
+            utwpFun: set.fun(() => {
+              x.upsert({ utwp: set("Johnx") });
+            }),
+          });
         }}
       >
         UTWP UPSERT FUN
@@ -134,7 +138,12 @@ export default function App() {
 }
 
 function SecondComponent() {
-  let state = useThis("test_state", { name: "Doe" });
+  let state = useThis<{
+    name: string;
+    val?: {
+      val2?: string;
+    };
+  }>("test_state", { name: "Doe" });
 
   return <>{state?.get()?.name}</>;
 }
@@ -142,7 +151,11 @@ function SecondComponent() {
 function UseEffectDiff() {
   const [rendered, setRedered] = useState(0);
 
-  const data = useThis("test_state");
+  const data = useThis<{
+    val?: {
+      val2?: string;
+    };
+  }>("test_state");
   const [data2, setData2] = useState({});
   useEffect(() => {
     if (rendered > 5 || rendered == -1) {

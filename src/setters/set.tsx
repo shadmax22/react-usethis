@@ -1,19 +1,11 @@
-import { set as jsSet } from "js-upsert";
+import { set as jsSet, SetValueSignature } from "js-upsert";
 import { setFun } from "./setFun";
 
 type setType = {
-  (value: any, index?: any[] | null | string): void;
-  fun: (fun: void) => void;
-  append: (value: any, index?: any[] | null | string) => void;
+  <T>(value: T | ((prevValue: T) => T)): SetValueSignature<T>;
+  fun: <T>(fun: T) => SetValueSignature<T>;
 };
 
-export const set = jsSet as setType;
+export const set = jsSet as unknown as setType;
 
 set.fun = setFun;
-
-set.append = (value: any, index?: any[] | null | string) => {
-  return jsSet((pv: any) => {
-    const valueToAppend = typeof value == "function" ? value(pv) : value;
-    return { ...pv, ...valueToAppend };
-  }, index ?? null);
-};

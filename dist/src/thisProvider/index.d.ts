@@ -1,1 +1,1 @@
-export { ThisProvider } from '../setter/ThisProvider';
+export { ThisProvider } from '../core/ThisProvider';

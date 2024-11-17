@@ -1,41 +1,32 @@
-import { useContext as u } from "react";
-import { _ as s, a as o, T as c, r as p } from "./Dispatcher-vax56yhO.js";
-import { R as x } from "./Dispatcher-vax56yhO.js";
-function i(t, n) {
-  return s(o.dispatch, o.getState(), {
+import { s as i, y as u, u as c, _ as o, T as f } from "./context-BcLDXb4T.js";
+import { useContext as p } from "react";
+const n = (t) => typeof t == "function" ? i(t) : Array.isArray(t) ? t.map(n) : t !== null && typeof t == "object" ? Object.keys(t).reduce((r, e) => (r[e] = n(t[e]), r), {}) : t;
+function h(t) {
+  return u(() => n(t));
+}
+const l = u;
+l.fun = h;
+function s(t, r) {
+  return c(o.dispatch, {
     type: "without_provider"
-  })(t, n);
+  })(t, r);
 }
-function h(t, n) {
-  let r;
+function m(t, r) {
+  return s(t, r);
+}
+function x(t, r) {
+  let e;
   try {
-    r = u(c);
+    e = p(f);
   } catch {
-    r = null;
+    e = null;
   }
-  return r === null ? i(t, n) : r(t, n);
-}
-function _(t, n) {
-  return i(t, n);
-}
-function a(t) {
-  return t.replace(/[\[\]'"]/g, "").split(".");
-}
-function T(t, n = null) {
-  let r = Math.floor(Math.random() * 100), e = typeof n == "string" ? a(n) : n;
-  return {
-    ["$$@@@@__upsert_hook_" + r]: {
-      value: p(t),
-      index: e,
-      isFunction: typeof t == "function",
-      valueType: "function"
-    }
-  };
+  return e === null ? s(t, r) : e(t, r);
 }
 export {
-  _ as getThis,
-  x as set,
-  T as setFun,
-  h as useThis
+  m as getThis,
+  l as set,
+  h as setFun,
+  x as useThis
 };
 //# sourceMappingURL=index.js.map
