@@ -68,4 +68,21 @@ describe("App", () => {
     fireEvent.click(screen.getByTestId("upserter-utwp-value-fun-verify"));
     expect(screen.getByTestId("utwp-value").innerHTML).toBe("Johnx");
   });
+  it("useThis upsert at", () => {
+    render(<MainContainer />);
+
+    fireEvent.click(screen.getByTestId("upsert-at"));
+    expect(screen.getByTestId("upsertat-value").innerHTML).toBe("Doe");
+
+   
+  });
+  it("useThis upsert atFun", () => {
+    render(<MainContainer />);
+
+    fireEvent.click(screen.getByTestId("upsert-atFun-setter"));
+    fireEvent.click(screen.getByTestId("upsert-atFun-runner"));
+    expect(screen.getByTestId("upsertat-value").innerHTML).toBe("Doe2");
+
+   
+  });
 });

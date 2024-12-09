@@ -10,9 +10,13 @@ type main_schema = {
   utwp?: string;
   utwpFun?: () => void;
   fun?: () => void;
+  upsertAt?: string
+  upsertAtFun?: ()=>{}
 };
 export default function App() {
   let state = useThis<main_schema>("test_state", { name: "John" });
+
+  
   return (
     <>
       <h1>Test Cases</h1>
@@ -133,6 +137,35 @@ export default function App() {
       >
         UTWP UPSERT FUN VERIFY
       </button>
+
+      <h1 data-testid={"upsertat-value"} className="UPSERT AT">
+        {state?.get()?.upsertAt}
+      </h1>
+      <button
+          data-testid={"upsert-at"}
+          onClick={() => {
+            state.upsert.at("upsertAt", "Doe");
+          }}
+        >
+          upsert-at CLICK ME
+        </button>
+   
+      <button
+          data-testid={"upsert-atFun-setter"}
+          onClick={() => {
+            state.upsert.atFun("upsertAtFun", ()=>{
+              state.upsert.at("upsertAt", "Doe2");
+            });
+          }}
+        >
+          upsert-atFun Setter CLICK ME
+        </button>
+      <button
+          data-testid={"upsert-atFun-runner"}
+          onClick={state.fetch()?.upsertAtFun}
+        >
+          upsert-atFun Setter Runner CLICK ME
+        </button>
     </>
   );
 }

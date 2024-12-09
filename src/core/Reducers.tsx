@@ -2,6 +2,7 @@ import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
 import { upsert as up } from "js-upsert";
 import { replaceIdsWithFunctions } from "../utils/functionRetrieval";
+import { replaceFunctionsWithIds } from "../redux/middleware/function_presever";
 
 /*
 
@@ -67,5 +68,38 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
     return _MAINSTORE.getState().This[StateName];
   };
 
+  upsert.at = (...keys: [...(string | number)[], unknown])=>{
+    const haystack = Array.isArray(main_state)
+    ? [...main_state]
+    : { ...((main_state ?? {}) as object) };
+
+  dispatcher(
+    StateHandler.upsert({
+      data: up(haystack).at(...keys),
+      active_state: StateName,
+      config: {},
+    })
+  );
+  }
+  upsert.funAt = (...keys: [...(string | number)[], void])=>{
+    const haystack = Array.isArray(main_state)
+    ? [...main_state]
+    : { ...((main_state ?? {}) as object) };
+
+    const value = replaceFunctionsWithIds(keys[keys.length -1]);
+    
+    keys.pop();
+    
+    const new_at_path = [...keys, value];
+  dispatcher(
+    StateHandler.upsert({
+      data: up(haystack).at(new_at_path as  [...(string | number)[], void]),
+      active_state: StateName,
+      config: {},
+    })
+  );
+  }
+
   return upsert;
 }
+

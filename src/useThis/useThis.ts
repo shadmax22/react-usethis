@@ -13,7 +13,7 @@ type StateManager<T> = {
   get: () => T;
   update: (newState: ((previos_state: T) => T) | T) => T;
   append: (newState: ((previos_state: T) => Partial<T>) | Partial<T>) => T;
-  upsert: <K>(...partialState: typeParam_upsert<T, keyof K>[]) => T;
+  upsert: {(...partialState: typeParam_upsert<T>[]): T, at: (...keys: (string|number)[])=> T, atFun: (...keys: [...(string|number)[], Function])=> T};
   fetch: () => T;
 };
 
