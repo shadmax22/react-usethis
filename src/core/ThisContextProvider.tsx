@@ -18,7 +18,6 @@ export default function ThisContextProvider(props: any) {
   //     },
   //   }
   // );
-  useSelector((s: any) => s.This);
 
   const useThisMainFunction = useThisDispatcher(reduxStateDispatcher);
 

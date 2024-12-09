@@ -1,4 +1,4 @@
-import { set, useThis } from "../index";
+import { set, useThis } from "../../index";
 
 export default function DeepUpdaterTest() {
   let s = useThis("MY_STATE", { gr: "gr", gg: "g" });
