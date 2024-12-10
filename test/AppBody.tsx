@@ -176,26 +176,9 @@ function SecondComponent() {
     };
   }>("test_state", { name: "Doe" });
 
-  return (
-    <>
-      {state?.get()?.name}
-
-      <TestComponent></TestComponent>
-    </>
-  );
+  return <>{state?.get()?.name}</>;
 }
 
-function TestComponent() {
-  return (
-    <>
-      <TestComponent2></TestComponent2>
-    </>
-  );
-}
-function TestComponent2() {
-  console.log("Loaded");
-  return <></>;
-}
 function UseEffectDiff() {
   const [rendered, setRedered] = useState(0);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ThisProvider } from "../src/thisProvider";
-import App from "./AppBody";
+import App from "./effectTest/EffectApp";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

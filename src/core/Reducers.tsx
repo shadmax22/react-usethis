@@ -3,6 +3,8 @@ import _MAINSTORE, { StoreState } from "../redux/store";
 import { upsert as up } from "js-upsert";
 import { replaceIdsWithFunctions } from "../utils/functionRetrieval";
 import { replaceFunctionsWithIds } from "../redux/middleware/function_presever";
+import { StateManagerType } from "../useThis/useThis";
+import { registerEffect } from "./EffectManager";
 
 /*
 
@@ -27,8 +29,11 @@ export function Updater(StateName: keyof StoreState["This"], dispatcher: any) {
   };
 }
 
-export function Appender(StateName: keyof StoreState["This"], dispatcher: any) {
-  return function append(data: any) {
+export function Appender(
+  StateName: keyof StoreState["This"],
+  dispatcher: any
+): StateManagerType<keyof StoreState["This"]>["append"] {
+  return function append(data) {
     let __DATA =
       typeof data == "function"
         ? data(_MAINSTORE.getState().This[StateName])
@@ -61,7 +66,9 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
     } catch (e) {}
   }
 
-  const upsert = (...data: any) => {
+  const upsert = (
+    ...data: any
+  ): StateManagerType<keyof StoreState["This"]>["upsert"] => {
     for (let i of data) {
       updater(i);
     }
@@ -80,6 +87,7 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
         config: {},
       })
     );
+    return _MAINSTORE.getState().This[StateName];
   };
   upsert.funAt = (...keys: [...(string | number)[], void]) => {
     const haystack = Array.isArray(main_state)
@@ -100,7 +108,36 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
         config: {},
       })
     );
+    return _MAINSTORE.getState().This[StateName];
   };
 
   return upsert;
+}
+
+export function StateRemover(
+  StateName: keyof StoreState["This"],
+  dispatcher: any,
+  useThisReturn: any
+): StateManagerType<keyof StoreState["This"]>["effect"] {
+  const requestedStateName = StateName as keyof StoreState["This"];
+
+  return (resolver, dependent_states) => {
+    registerEffect({
+      state_name: requestedStateName,
+      dependent_state_names: dependent_states ?? [],
+      effect: () =>
+        resolver({
+          state: _MAINSTORE.getState().This,
+          resolver: () => {
+            dispatcher(
+              StateHandler.removeState({
+                active_state: StateName,
+              })
+            );
+          },
+        }),
+    });
+
+    return useThisReturn;
+  };
 }

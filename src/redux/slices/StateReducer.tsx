@@ -34,6 +34,16 @@ export const StateReducer = createSlice({
       state[active_state] = data;
       return state;
     },
+    removeState: (state: any, action) => {
+      let { active_state } = action.payload;
+      debugger;
+
+      if ((state[active_state] ?? null) === null) state[active_state] = {};
+
+      delete state[active_state];
+
+      return state;
+    },
 
     set: (state: any, action) => {
       if (Array.isArray(action.payload.data)) {
