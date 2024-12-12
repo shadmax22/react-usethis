@@ -7,7 +7,7 @@ export default function App() {
   return (
     <>
       <button
-        onClick={() => my_global_state.upsert.at("clicked", (t) => t + 1)}
+        onClick={() => useThis("main_state").upsert.at("clicked", (t) => t + 1)}
       >
         Clicked {my_global_state.get().clicked}
       </button>
@@ -19,8 +19,7 @@ export default function App() {
 function Component1() {
   let my_state = useThis("my_state", { data: true }).effect(
     ({ state, resolver }: any) => {
-      if (state.main_state.clicked === 5) {
-        debugger;
+      if (state.main_state.clicked > 1) {
         resolver();
       }
     },

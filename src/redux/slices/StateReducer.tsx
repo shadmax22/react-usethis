@@ -36,7 +36,6 @@ export const StateReducer = createSlice({
     },
     removeState: (state: any, action) => {
       let { active_state } = action.payload;
-      debugger;
 
       if ((state[active_state] ?? null) === null) state[active_state] = {};
 

@@ -2,19 +2,23 @@ import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
 import { StateManagerType } from "../useThis/useThis";
 import { replaceIdsWithFunctions } from "../utils/functionRetrieval";
-import { executeEffects } from "./EffectManager";
+import { executeEffects, getEffects } from "./EffectManager";
 import { Appender, StateRemover, Updater, Upsert } from "./Reducers";
 
 export const useThisDispatcher = (StateName: string, defaultValue: any) => {
   const redux_dispatcher = _MAINSTORE.dispatch;
   const dispatcher = (param: any) => {
+    const r = redux_dispatcher(param);
     executeEffects(StateName);
-
-    return redux_dispatcher(param);
+    return r;
   };
   const requestedStateName = StateName as keyof StoreState["This"];
   const state_data = _MAINSTORE.getState()?.This;
-  if (!state_data[requestedStateName] && defaultValue) {
+  if (
+    !state_data[requestedStateName] &&
+    defaultValue &&
+    !getEffects().resolved[requestedStateName]
+  ) {
     dispatcher(
       StateHandler.update({
         data: defaultValue,

@@ -4,7 +4,7 @@ import { upsert as up } from "js-upsert";
 import { replaceIdsWithFunctions } from "../utils/functionRetrieval";
 import { replaceFunctionsWithIds } from "../redux/middleware/function_presever";
 import { StateManagerType } from "../useThis/useThis";
-import { registerEffect } from "./EffectManager";
+import { registerEffect, resolveEffect } from "./EffectManager";
 
 /*
 
@@ -121,12 +121,16 @@ export function StateRemover(
 ): StateManagerType<keyof StoreState["This"]>["effect"] {
   const requestedStateName = StateName as keyof StoreState["This"];
 
-  return (resolver, dependent_states) => {
+  // usersEffectFun & dependent_states will be provided by user
+  return (usersEffectFun, dependent_states) => {
     registerEffect({
       state_name: requestedStateName,
       dependent_state_names: dependent_states ?? [],
-      effect: () =>
-        resolver({
+
+      // Effect is stored in effect_collection.effects.{process_id}
+
+      effect: (effectResolver: Function) =>
+        usersEffectFun({
           state: _MAINSTORE.getState().This,
           resolver: () => {
             dispatcher(
@@ -134,6 +138,7 @@ export function StateRemover(
                 active_state: StateName,
               })
             );
+            effectResolver();
           },
         }),
     });
