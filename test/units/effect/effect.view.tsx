@@ -1,15 +1,13 @@
 import React from "react";
 import { useThis } from "../../../src/useThis/useThis";
 
-export default function App() {
-  let my_global_state = useThis("main_state", { clicked: 0 });
+export default function EffectView() {
+  let my_global_state = useThis("main_state", { route: "main" });
 
   return (
     <>
-      <button
-        onClick={() => useThis("main_state").upsert.at("clicked", (t) => t + 1)}
-      >
-        Clicked {my_global_state.get().clicked}
+      <button onClick={() => my_global_state.upsert.at("route", "component1")}>
+        Open Component 2
       </button>
       <Component1></Component1>
       <Component2></Component2>

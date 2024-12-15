@@ -12,7 +12,7 @@ type main_schema = {
   upsertAt?: string;
   upsertAtFun?: () => {};
 };
-export default function CoreBody() {
+export default function CoreView() {
   let state = useThis<main_schema>("test_state", { name: "John" });
 
   return (

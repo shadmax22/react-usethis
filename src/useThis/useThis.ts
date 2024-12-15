@@ -23,6 +23,13 @@ import { useThisDispatcher } from "../core/Dispatcher";
  * @returns
  */
 
+export type useThis = {
+  <DefaultValue>(
+    StateName: string,
+    defaultValue?: DefaultValue
+  ): useThisType<DefaultValue>;
+  new: (props: string | object) => {};
+};
 export type useThisType<T> = {
   get: () => T;
   update: (newState: ((previos_state: T) => T) | T) => T;
@@ -39,7 +46,7 @@ export type useThisType<T> = {
   ) => useThisType<T>;
 };
 
-export function useThis<DefaultValue>(
+function useThisMainFunction<DefaultValue>(
   StateName: string,
   defaultValue?: DefaultValue
 ): useThisType<DefaultValue> {
@@ -63,3 +70,5 @@ export function useThis<DefaultValue>(
     defaultValue
   ) as unknown as useThisType<DefaultValue>;
 }
+
+export const useThis = useThisMainFunction as useThis;
