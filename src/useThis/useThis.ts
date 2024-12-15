@@ -1,6 +1,21 @@
 import { typeParam_upsert } from "js-upsert";
 import { useSelector } from "react-redux";
 import { useThisDispatcher } from "../core/Dispatcher";
+
+/*
+
+  Flow:-
+
+    useThis -> 
+      useThisDispatcher->
+        Dispatcher->
+          Handle Effects
+          Dispatch Reducer
+        Return Reducer binded with dispatcher
+
+
+*/
+
 /**
  * useThis allows you to use global state in simplified way. Just specify a state name then ready to go.
  * @param StateName
@@ -8,7 +23,7 @@ import { useThisDispatcher } from "../core/Dispatcher";
  * @returns
  */
 
-export type StateManagerType<T> = {
+export type useThisType<T> = {
   get: () => T;
   update: (newState: ((previos_state: T) => T) | T) => T;
   append: (newState: ((previos_state: T) => Partial<T>) | Partial<T>) => T;
@@ -21,13 +36,13 @@ export type StateManagerType<T> = {
   effect: (
     resolver: (props: { state: object; resolver: Function }) => unknown,
     dependent_states: string[]
-  ) => StateManagerType<T>;
+  ) => useThisType<T>;
 };
 
 export function useThis<DefaultValue>(
   StateName: string,
   defaultValue?: DefaultValue
-): StateManagerType<DefaultValue> {
+): useThisType<DefaultValue> {
   // let context;
 
   // try {
@@ -46,5 +61,5 @@ export function useThis<DefaultValue>(
   return useThisDispatcher(
     StateName,
     defaultValue
-  ) as unknown as StateManagerType<DefaultValue>;
+  ) as unknown as useThisType<DefaultValue>;
 }

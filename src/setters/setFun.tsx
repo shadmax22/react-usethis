@@ -1,6 +1,6 @@
 import { set } from "js-upsert";
-import { replaceFunctionsWithIds } from "../redux/middleware/function_presever";
+import { FunctionManager } from "../core/managers/FunctionManager";
 
 export function setFun<T>(value: T) {
-  return set<T>(() => replaceFunctionsWithIds(value));
+  return set<T>(() => FunctionManager.store(value) as T);
 }

@@ -1,4 +1,23 @@
-let effect_collection: {
+/*
+
+
+  useThis-Effect
+
+  Idea: Execute a function on change of state
+
+  Initialization Flow:-
+
+  1. UseThis Dispatcher providing a reducer `EffectReducer` to useThis
+  2. On Initialisation of useThis(state_name) having a effect(effect_fun, dependent_state), effect is getting registered at a `effect_collection` 
+  
+
+  Working Flow:-
+
+  All state dispatchers are having hook `executeEffects` to execute effect which is having dependency of current state. 
+
+
+*/
+const effect_collection: {
   dependent_state: {
     [state_id: string]: number[];
   };
@@ -16,6 +35,15 @@ let effect_collection: {
   registeredProcess: {},
 };
 
+/**
+ *
+ * @param props
+ * @param props.state_name State name which is dispatching a effect fn
+ * @param props.dependent_state_names Names of state which will execute effect fn on change
+ * @param props.effect Effect Fn provided by user
+ * @returns
+ */
+
 export function registerEffect(props: {
   state_name: string;
   effect: Function;
@@ -23,7 +51,15 @@ export function registerEffect(props: {
 }) {
   const { state_name, effect, dependent_state_names } = props;
 
-  // Check if state is already registered it effect or not
+  if (
+    !Array.isArray(dependent_state_names) ||
+    dependent_state_names.length === 0
+  )
+    throw TypeError(
+      "Second parameter of effect `dependent_states` must be a non-empty array."
+    );
+
+  // Check if state is already registered its effect or not
 
   if (effect_collection.registeredStates?.[state_name]) return;
 
@@ -66,6 +102,7 @@ export function executeEffects(state_name: string) {
     // Execute all assigned process
     for (const process_id of effect_collection.dependent_state[state_name]) {
       try {
+        //  Executing the process function associated with process_id and passing resolveEffect
         effect_collection.effects[process_id](() =>
           resolveEffect({ dependent_state_name: state_name, process_id })
         );

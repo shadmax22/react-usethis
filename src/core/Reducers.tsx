@@ -1,10 +1,9 @@
+import { upsert as up } from "js-upsert";
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
-import { upsert as up } from "js-upsert";
-import { replaceIdsWithFunctions } from "../utils/functionRetrieval";
-import { replaceFunctionsWithIds } from "../redux/middleware/function_presever";
-import { StateManagerType } from "../useThis/useThis";
-import { registerEffect, resolveEffect } from "./EffectManager";
+import { useThisType } from "../useThis/useThis";
+import { registerEffect } from "./managers/EffectManager";
+import { FunctionManager } from "./managers/FunctionManager";
 
 /*
 
@@ -25,14 +24,14 @@ export function Updater(StateName: keyof StoreState["This"], dispatcher: any) {
         state: StateName,
       })
     );
-    return replaceIdsWithFunctions(_MAINSTORE.getState().This[StateName]);
+    return _MAINSTORE.getState().This[StateName];
   };
 }
 
 export function Appender(
   StateName: keyof StoreState["This"],
   dispatcher: any
-): StateManagerType<keyof StoreState["This"]>["append"] {
+): useThisType<keyof StoreState["This"]>["append"] {
   return function append(data) {
     let __DATA =
       typeof data == "function"
@@ -68,7 +67,7 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
 
   const upsert = (
     ...data: any
-  ): StateManagerType<keyof StoreState["This"]>["upsert"] => {
+  ): useThisType<keyof StoreState["This"]>["upsert"] => {
     for (let i of data) {
       updater(i);
     }
@@ -94,7 +93,7 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
       ? [...main_state]
       : { ...((main_state ?? {}) as object) };
 
-    const value = replaceFunctionsWithIds(keys[keys.length - 1]);
+    const value = FunctionManager.store(keys[keys.length - 1]);
 
     keys.pop();
 
@@ -114,11 +113,12 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
   return upsert;
 }
 
-export function StateRemover(
+// EffectReducer is getting dispatched here
+export function EffectReducer(
   StateName: keyof StoreState["This"],
   dispatcher: any,
   useThisReturn: any
-): StateManagerType<keyof StoreState["This"]>["effect"] {
+): useThisType<keyof StoreState["This"]>["effect"] {
   const requestedStateName = StateName as keyof StoreState["This"];
 
   // usersEffectFun & dependent_states will be provided by user

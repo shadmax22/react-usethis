@@ -1,9 +1,10 @@
 import { render, screen, fireEvent, getByTestId } from "@testing-library/react";
-import { App } from "./App.jsx";
+import { App } from "../App.jsx";
+import CoreBody from "./core.tsx";
 
 describe("App", () => {
   it("useThis Default-Value", () => {
-    render(<App />);
+    render(<App><CoreBody></CoreBody></App>);
 
     // fireEvent.click(screen.getByTestId("clicker"));
 
@@ -22,7 +23,7 @@ describe("App", () => {
   });
 
   it("useThis Upsert", () => {
-    render(<App />);
+    render(<App><CoreBody></CoreBody></App>);
     fireEvent.click(screen.getByTestId("function-setter"));
     fireEvent.click(screen.getByTestId("function-runner"));
     expect(screen.getByTestId("default-value").innerHTML).toBe("Denver");
@@ -32,7 +33,7 @@ describe("App", () => {
   });
 
   it("useThis Update", () => {
-    render(<App />);
+    render(<App><CoreBody></CoreBody></App>);
     fireEvent.click(screen.getByTestId("updater"));
     expect(screen.getByTestId("default-value").innerHTML).toBe("Hopper");
     expect(screen.getByTestId("default-value-replace-check").innerHTML).toBe(
@@ -45,7 +46,7 @@ describe("App", () => {
     );
   });
   it("useThis Append", () => {
-    render(<App />);
+    render(<App><CoreBody></CoreBody></App>);
     fireEvent.click(screen.getByTestId("appender"));
     expect(screen.getByTestId("default-value").innerHTML).toBe("HopperHopper");
     expect(screen.getByTestId("append-test").innerHTML).toBe("BOB");
@@ -54,12 +55,12 @@ describe("App", () => {
     expect(screen.getByTestId("append-test").innerHTML).toBe("BOBBOB");
   });
   it("useThis useEffect-diff", () => {
-    render(<App />);
+    render(<App><CoreBody></CoreBody></App>);
 
     expect(screen.getByTestId("total-rendered").innerHTML).toBe("1");
   });
   it("useThis UTWP Upsert", () => {
-    render(<App />);
+    render(<App><CoreBody></CoreBody></App>);
 
     fireEvent.click(screen.getByTestId("upserter-utwp-value"));
     expect(screen.getByTestId("utwp-value").innerHTML).toBe("John");
@@ -69,13 +70,13 @@ describe("App", () => {
     expect(screen.getByTestId("utwp-value").innerHTML).toBe("Johnx");
   });
   it("useThis upsert at", () => {
-    render(<App />);
+    render(<App><CoreBody></CoreBody></App>);
 
     fireEvent.click(screen.getByTestId("upsert-at"));
     expect(screen.getByTestId("upsertat-value").innerHTML).toBe("Doe");
   });
   it("useThis upsert atFun", () => {
-    render(<App />);
+    render(<App><CoreBody></CoreBody></App>);
 
     fireEvent.click(screen.getByTestId("upsert-atFun-setter"));
     fireEvent.click(screen.getByTestId("upsert-atFun-runner"));

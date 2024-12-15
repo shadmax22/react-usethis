@@ -1,14 +1,17 @@
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
-import { StateManagerType } from "../useThis/useThis";
-import { replaceIdsWithFunctions } from "../utils/functionRetrieval";
-import { executeEffects, getEffects } from "./EffectManager";
-import { Appender, StateRemover, Updater, Upsert } from "./Reducers";
+import { useThisType } from "../useThis/useThis";
+import { executeEffects, getEffects } from "./managers/EffectManager";
+import { FunctionManager } from "./managers/FunctionManager";
+import { Appender, EffectReducer, Updater, Upsert } from "./Reducers";
 
 export const useThisDispatcher = (StateName: string, defaultValue: any) => {
   const redux_dispatcher = _MAINSTORE.dispatch;
   const dispatcher = (param: any) => {
     const r = redux_dispatcher(param);
+
+    // Execute all exisiting effects which is dependent on given state
+
     executeEffects(StateName);
     return r;
   };
@@ -28,36 +31,33 @@ export const useThisDispatcher = (StateName: string, defaultValue: any) => {
   }
 
   const useThisReturn = {
-    update: Updater(
-      requestedStateName,
-      dispatcher
-    ) as unknown as StateManagerType<StoreState["This"]>["update"],
-    append: Appender(
-      requestedStateName,
-      dispatcher
-    ) as unknown as StateManagerType<StoreState["This"]>["append"],
-    upsert: Upsert(
-      requestedStateName,
-      dispatcher
-    ) as unknown as StateManagerType<StoreState["This"]>["upsert"],
+    update: Updater(requestedStateName, dispatcher) as unknown as useThisType<
+      StoreState["This"]
+    >["update"],
+    append: Appender(requestedStateName, dispatcher) as unknown as useThisType<
+      StoreState["This"]
+    >["append"],
+    upsert: Upsert(requestedStateName, dispatcher) as unknown as useThisType<
+      StoreState["This"]
+    >["upsert"],
     dispatcher: dispatcher,
     This: _MAINSTORE.getState().This[requestedStateName],
     get: () =>
-      _MAINSTORE.getState().This[
-        requestedStateName
-      ] as unknown as StateManagerType<StoreState["This"]>["get"],
+      _MAINSTORE.getState().This[requestedStateName] as unknown as useThisType<
+        StoreState["This"]
+      >["get"],
     fetch: () =>
-      replaceIdsWithFunctions(
+      FunctionManager.fetch(
         _MAINSTORE.getState().This[requestedStateName]
-      ) as unknown as StateManagerType<StoreState["This"]>["fetch"],
+      ) as unknown as useThisType<StoreState["This"]>["fetch"],
   };
 
   return {
     ...useThisReturn,
-    effect: StateRemover(
+    effect: EffectReducer(
       requestedStateName,
       dispatcher,
       useThisReturn
-    ) as unknown as StateManagerType<StoreState["This"]>["effect"],
-  } as StateManagerType<StoreState["This"]>;
+    ) as unknown as useThisType<StoreState["This"]>["effect"],
+  } as useThisType<StoreState["This"]>;
 };

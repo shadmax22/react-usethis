@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { setFun, useThis } from "../index";
-import { set } from "../index";
+import { setFun, useThis } from "../../../index";
+import { set } from "../../../index";
 import React from "react";
 
 type main_schema = {
@@ -12,7 +12,7 @@ type main_schema = {
   upsertAt?: string;
   upsertAtFun?: () => {};
 };
-export default function AppBody() {
+export default function CoreBody() {
   let state = useThis<main_schema>("test_state", { name: "John" });
 
   return (
