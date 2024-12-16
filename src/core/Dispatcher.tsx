@@ -1,6 +1,6 @@
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
-import { useThisType } from "../useThis/useThis";
+import { useThisInstanceType, useThisType } from "../useThis/useThis";
 import { executeEffects, getEffects } from "./managers/EffectManager";
 import { FunctionManager } from "./managers/FunctionManager";
 import { Appender, EffectReducer, Updater, Upsert } from "./Reducers";
@@ -52,12 +52,47 @@ export const useThisDispatcher = (StateName: string, defaultValue: any) => {
       ) as unknown as useThisType<StoreState["This"]>["fetch"],
   };
 
+  return useThisReturn as useThisType<StoreState["This"]>;
+};
+export const useThisInstanceDispatcher = (StateName: string) => {
+  const redux_dispatcher = _MAINSTORE.dispatch;
+  const dispatcher = (param: any) => {
+    const r = redux_dispatcher(param);
+
+    // Execute all exisiting effects which is dependent on given state
+    executeEffects(StateName);
+    return r;
+  };
+  const requestedStateName = StateName as keyof StoreState["This"];
+
+  const useThisReturn = {
+    update: Updater(requestedStateName, dispatcher) as unknown as useThisType<
+      StoreState["This"]
+    >["update"],
+    append: Appender(requestedStateName, dispatcher) as unknown as useThisType<
+      StoreState["This"]
+    >["append"],
+    upsert: Upsert(requestedStateName, dispatcher) as unknown as useThisType<
+      StoreState["This"]
+    >["upsert"],
+    dispatcher: dispatcher,
+    This: _MAINSTORE.getState().This[requestedStateName],
+    get: () =>
+      _MAINSTORE.getState().This[requestedStateName] as unknown as useThisType<
+        StoreState["This"]
+      >["get"],
+    fetch: () =>
+      FunctionManager.fetch(
+        _MAINSTORE.getState().This[requestedStateName]
+      ) as unknown as useThisType<StoreState["This"]>["fetch"],
+  };
+
   return {
     ...useThisReturn,
     effect: EffectReducer(
       requestedStateName,
       dispatcher,
       useThisReturn
-    ) as unknown as useThisType<StoreState["This"]>["effect"],
+    ) as unknown as useThisInstanceType<StoreState["This"]>["effect"],
   } as useThisType<StoreState["This"]>;
 };

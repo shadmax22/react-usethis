@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ThisProvider } from "../src/thisProvider";
-import {App} from "./units/App.jsx";
+import { App } from "./units/App.jsx";
+import { InstanceView } from "./units/instance/instance.view.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-   <App body={<h1>G</h1>}></App>
+    <App children={<InstanceView />}></App>
   </React.StrictMode>
 );

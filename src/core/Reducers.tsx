@@ -1,7 +1,7 @@
 import { upsert as up } from "js-upsert";
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
-import { useThisType } from "../useThis/useThis";
+import { useThisInstanceType, useThisType } from "../useThis/useThis";
 import { registerEffect } from "./managers/EffectManager";
 import { FunctionManager } from "./managers/FunctionManager";
 
@@ -118,7 +118,7 @@ export function EffectReducer(
   StateName: keyof StoreState["This"],
   dispatcher: any,
   useThisReturn: any
-): useThisType<keyof StoreState["This"]>["effect"] {
+): useThisInstanceType<keyof StoreState["This"]>["effect"] {
   const requestedStateName = StateName as keyof StoreState["This"];
 
   // usersEffectFun & dependent_states will be provided by user

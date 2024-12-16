@@ -1,3 +1,5 @@
+import { useThis_Instance } from "../../useThis/useThis";
+
 /*
 
 
@@ -47,7 +49,7 @@ const effect_collection: {
 export function registerEffect(props: {
   state_name: string;
   effect: Function;
-  dependent_state_names: string[];
+  dependent_state_names: (string | useThis_Instance<unknown>)[];
 }) {
   const { state_name, effect, dependent_state_names } = props;
 
@@ -73,15 +75,30 @@ export function registerEffect(props: {
 
   // Iterate `dependent_state_names` and execute effects of each states
 
-  for (const dependent_state of dependent_state_names) {
-    // Verifing If dependent state registerd in collection or not, And appending new process_id to dependent_state
-    if (effect_collection.dependent_state?.[dependent_state]) {
-      effect_collection.dependent_state[dependent_state] = [
-        ...effect_collection.dependent_state[dependent_state],
-        process_id,
-      ];
+  for (let dependent_state of dependent_state_names) {
+    if (
+      typeof dependent_state == "function" &&
+      //@ts-ignore
+      dependent_state?.["@___usethis"] &&
+      dependent_state?.["stateName"]
+    ) {
+      dependent_state = dependent_state["stateName"];
+    }
+    if (typeof dependent_state === "string") {
+      // Verifing If dependent state registerd in collection or not, And appending new process_id to dependent_state
+
+      if (effect_collection.dependent_state?.[dependent_state]) {
+        effect_collection.dependent_state[dependent_state] = [
+          ...effect_collection.dependent_state[dependent_state],
+          process_id,
+        ];
+      } else {
+        effect_collection.dependent_state[dependent_state] = [process_id];
+      }
     } else {
-      effect_collection.dependent_state[dependent_state] = [process_id];
+      throw TypeError(
+        "Invalid type passed on `dependent_states`, Only string and useThis instance supported "
+      );
     }
 
     // Storing effect fun in effects collection via process_id
