@@ -1,7 +1,8 @@
 import { upsert as up } from "js-upsert";
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
-import { useThisInstanceType, useThisType } from "../useThis/useThis";
+import { useThisInstanceType } from "../useThis/useThisTypes";
+import { useThisReturnType } from "../useThis/useThisTypes";
 import { registerEffect } from "./managers/EffectManager";
 import { FunctionManager } from "./managers/FunctionManager";
 
@@ -31,7 +32,7 @@ export function Updater(StateName: keyof StoreState["This"], dispatcher: any) {
 export function Appender(
   StateName: keyof StoreState["This"],
   dispatcher: any
-): useThisType<keyof StoreState["This"]>["append"] {
+): useThisReturnType<keyof StoreState["This"]>["append"] {
   return function append(data) {
     let __DATA =
       typeof data == "function"
@@ -67,7 +68,7 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
 
   const upsert = (
     ...data: any
-  ): useThisType<keyof StoreState["This"]>["upsert"] => {
+  ): useThisReturnType<keyof StoreState["This"]>["upsert"] => {
     for (let i of data) {
       updater(i);
     }

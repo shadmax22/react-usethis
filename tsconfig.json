@@ -24,6 +24,6 @@
     "declarationDir": "./dist/types",
     "declaration": true
   },
-    "include": ["src/**/*", "index.ts", "test_funs/**/*.ts", "test_funs/useThis.test.tsx"],
+    "include": ["src/**/*", "index.ts", "test_funs/**/*.ts", "test_funs/useThis.test.tsx", "globals.d.ts"],
     "exclude": ["node_modules", "dist", "**/*.spec.ts"],
 }

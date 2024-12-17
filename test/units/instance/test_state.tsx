@@ -11,6 +11,7 @@ export type test_instance_view_main_schema = {
     val2?: string;
   };
 };
-export const main_state = new useThis<test_instance_view_main_schema>({
-  name: "John",
-}).create();
+
+export const test_state = new useThis<test_instance_view_main_schema>()
+  .default({ name: "Doe" })
+  .create();

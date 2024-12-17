@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./units/App.jsx";
-import { InstanceView } from "./units/instance/instance.view.tsx";
+import InstanceView from "./units/instance/effect/effect.view.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

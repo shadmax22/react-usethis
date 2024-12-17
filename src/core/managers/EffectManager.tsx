@@ -1,4 +1,4 @@
-import { useThis_Instance } from "../../useThis/useThis";
+import { useThis_Instance } from "../../useThis/useThisTypes";
 
 /*
 
@@ -80,9 +80,9 @@ export function registerEffect(props: {
       typeof dependent_state == "function" &&
       //@ts-ignore
       dependent_state?.["@___usethis"] &&
-      dependent_state?.["stateName"]
+      dependent_state?.["this"]
     ) {
-      dependent_state = dependent_state["stateName"];
+      dependent_state = dependent_state["this"];
     }
     if (typeof dependent_state === "string") {
       // Verifing If dependent state registerd in collection or not, And appending new process_id to dependent_state
@@ -105,6 +105,8 @@ export function registerEffect(props: {
 
     effect_collection.effects[process_id] = effect;
   }
+
+  // effect(() => resolveEffect({ dependent_state_name: state_name, process_id }));
   console.log(effect_collection);
 }
 
