@@ -1,4 +1,3 @@
-import { upsert as up } from "js-upsert";
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
 import { useThisReturnType } from "../useThis/useThisTypes";
@@ -47,8 +46,6 @@ export function Appender(
 }
 
 export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
-  const main_state = _MAINSTORE?.getState()?.This[StateName];
-
   function updater(data: any) {
     try {
       dispatcher(
