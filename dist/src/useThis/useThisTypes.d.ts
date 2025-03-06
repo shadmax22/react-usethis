@@ -13,9 +13,7 @@ export type useThis_instance_runnable<DefaultValue> = {
     (): useThisReturnType<DefaultValue>;
     this: string;
     type: DefaultValue;
-    static: {
-        get: <DefaultValue>() => DefaultValue;
-    };
+    use: useThisReturnType<DefaultValue>;
 };
 export type useThis_Instance<DefaultValue> = {
     onEffect: (resolver: (props: {
