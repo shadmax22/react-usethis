@@ -1,6 +1,6 @@
 {
   "name": "react-usethis",
-  "version": "0.1.53",
+  "version": "0.1.6",
   "description": "Redux state management utilty",
   "repository": {
     "type": "git",
