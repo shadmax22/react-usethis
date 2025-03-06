@@ -1,9 +1,16 @@
 import { useSelector } from "react-redux";
-import { useThisInstanceDispatcher } from "../core/Dispatcher";
+import {
+  useThisDispatcher,
+  useThisInstanceDispatcher,
+} from "../core/Dispatcher";
+import { registerEffect } from "../core/managers/EffectManager";
 import { StateHandler } from "../redux/slices/StateReducer";
-import _MAINSTORE from "../redux/store";
-import { useThis_this_instance, useThisInstanceType } from "./useThisTypes";
-import { executeEffects, registerEffect } from "../core/managers/EffectManager";
+import _MAINSTORE, { StoreState } from "../redux/store";
+import {
+  useThis_this_instance,
+  useThisInstanceType,
+  useThisReturnType,
+} from "./useThisTypes";
 export function useThisInstanceReturn(prop1: unknown) {
   const instance_data: useThis_this_instance = {
     created: false,
@@ -16,11 +23,14 @@ export function useThisInstanceReturn(prop1: unknown) {
 
   const useThisInstance = <T,>() => {
     if (!instance_data.created) {
-      throw Error("Cannot access useThis Instance without created");
+      throw Error("Cannot use useThis Instance without created");
     }
 
     return useThisInstanceFunction<T>(instance_data.stateName);
   };
+
+  useThisInstance["@___usethis"] = __APP_VERSION__;
+  useThisInstance["this"] = instance_data.stateName;
 
   useThisInstance.onEffect = (resolver: any, dependent_states: any) => {
     instance_data["onEffect"] = {
@@ -51,31 +61,11 @@ export function useThisInstanceReturn(prop1: unknown) {
     return useThisInstance;
   };
 
-  useThisInstance["@___usethis"] = __APP_VERSION__;
-  useThisInstance["this"] = instance_data.stateName;
+  useThisInstance.use = {};
 
   useThisInstance.create = () => {
-    if (instance_data.onEffect) {
-      registerEffect({
-        state_name: instance_data.stateName,
-        dependent_state_names: instance_data.onEffect.dependent_states ?? [],
-
-        // Effect is stored in effect_collection.effects.{process_id}
-
-        effect: (effectResolver: Function) =>
-          instance_data.onEffect?.resolver({
-            state: _MAINSTORE.getState().This,
-            resolver: () => {
-              _MAINSTORE.dispatch(
-                StateHandler.removeState({
-                  active_state: instance_data.stateName,
-                })
-              );
-              effectResolver();
-            },
-          }),
-      });
-    }
+    if (instance_data.created) return;
+    useThisInstance["this"] = instance_data.stateName;
 
     if (instance_data.defaultData) {
       _MAINSTORE.dispatch(
@@ -85,10 +75,57 @@ export function useThisInstanceReturn(prop1: unknown) {
         })
       );
     }
+
+    if (instance_data.onEffect) {
+      registerEffect({
+        state_name: instance_data.stateName,
+        dependent_state_names: instance_data.onEffect.dependent_states ?? [],
+
+        // Effect is stored in effect_collection.effects.{process_id}, This will execute on effect condtion
+
+        effect: (effectResolver: Function) =>
+          instance_data.onEffect?.resolver({
+            thisState: _MAINSTORE.getState().This,
+            state: (
+              state_name:
+                | keyof StoreState["This"]
+                | (Function & {
+                    this: keyof StoreState["This"];
+                    "@___usethis": unknown;
+                  })
+            ) => {
+              if (typeof state_name == "function" && state_name["@___usethis"])
+                return _MAINSTORE.getState().This[state_name.this];
+              return _MAINSTORE.getState().This[
+                state_name as keyof StoreState["This"]
+              ];
+            },
+            resolver: () => {
+              _MAINSTORE.dispatch(
+                StateHandler.removeState({
+                  active_state: instance_data.stateName,
+                })
+              );
+              effectResolver();
+
+              // instance_data.created = false;
+            },
+          }),
+      });
+    }
+
     instance_data.created = true;
+
+    useThisInstance.use = {
+      ...(useThisDispatcher(
+        instance_data["stateName"],
+        instance_data["defaultData"]
+      ) as unknown as useThisReturnType<(typeof instance_data)["defaultData"]>),
+    } as any;
 
     return useThisInstance;
   };
+
   return useThisInstance;
 }
 

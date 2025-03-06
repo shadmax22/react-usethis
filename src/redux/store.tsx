@@ -5,8 +5,10 @@ const _MAINSTORE = configureStore(
   {
     reducer: rootReducer,
 
-    // middleware: (getDefaultMiddleware) =>
-    //   getDefaultMiddleware().concat(functionMiddleware),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false, // Disables serializability check
+      }),
   }
   // applyMiddleware(functionMiddleware)
 );

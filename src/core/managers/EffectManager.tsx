@@ -21,20 +21,22 @@ import { useThis_Instance } from "../../useThis/useThisTypes";
 */
 const effect_collection: {
   dependent_state: {
-    [state_id: string]: number[];
+    [state_id: string]: string[];
   };
   effects: {
-    [process_id: number]: Function;
+    [process_id: string]: Function;
   };
-  registeredStates: { [state_name: string]: number };
+  registeredStates: { [state_name: string]: boolean };
   registeredProcess: { [process_id: number]: string };
   resolved: { [state_name: string]: boolean };
+  registeredDependency: { [state_name: string]: string[] };
 } = {
   dependent_state: {},
   effects: {},
   registeredStates: {},
   resolved: {},
   registeredProcess: {},
+  registeredDependency: {},
 };
 
 /**
@@ -67,11 +69,10 @@ export function registerEffect(props: {
 
   // Register a statename, to prevent re-rendering on next load
 
-  const process_id = Math.floor(100000 + Math.random() * 900000);
+  const process_id = state_name;
 
   // Register proccess and state
-  effect_collection.registeredStates[state_name] = process_id;
-  effect_collection.registeredProcess[process_id] = state_name;
+  effect_collection.registeredStates[state_name] = true;
 
   // Iterate `dependent_state_names` and execute effects of each states
 
@@ -95,6 +96,12 @@ export function registerEffect(props: {
       } else {
         effect_collection.dependent_state[dependent_state] = [process_id];
       }
+
+      // Store decoded dependent state
+      effect_collection.registeredDependency[state_name] = [
+        ...(effect_collection.registeredDependency[state_name] ?? []),
+        dependent_state,
+      ];
     } else {
       throw TypeError(
         "Invalid type passed on `dependent_states`, Only string and useThis instance supported "
@@ -106,8 +113,8 @@ export function registerEffect(props: {
     effect_collection.effects[process_id] = effect;
   }
 
-  // effect(() => resolveEffect({ dependent_state_name: state_name, process_id }));
-  console.log(effect_collection);
+  // effect(() => deleteEffect({ state_name }));
+  // console.log(effect_collection);
 }
 
 /*
@@ -123,7 +130,10 @@ export function executeEffects(state_name: string) {
       try {
         //  Executing the process function associated with process_id and passing resolveEffect
         effect_collection.effects[process_id](() =>
-          resolveEffect({ dependent_state_name: state_name, process_id })
+          resolveEffect({
+            dependent_state_name: state_name, // State which is dependent to process_id
+            state_name: process_id,
+          })
         );
       } catch (e) {
         // Handle the error
@@ -133,18 +143,32 @@ export function executeEffects(state_name: string) {
 }
 export function resolveEffect(props: {
   dependent_state_name: string;
-  process_id: number;
+  state_name: string;
 }) {
-  const { dependent_state_name, process_id: proccess_id } = props;
+  const { dependent_state_name, state_name } = props;
   effect_collection.dependent_state[dependent_state_name] =
     effect_collection.dependent_state[dependent_state_name].filter(
-      (item) => item !== proccess_id
+      (item) => item !== state_name
     );
 
-  delete effect_collection.effects[proccess_id];
+  delete effect_collection.effects[state_name];
 
-  effect_collection.resolved[effect_collection.registeredProcess[proccess_id]] =
-    true;
+  effect_collection.resolved[state_name] = true;
+}
+export function deleteEffect(props: { state_name: string }) {
+  let { state_name } = props;
+
+  // Iterate all registered process and remove states from dependency
+  for (let dependent_state of effect_collection.registeredDependency[
+    state_name
+  ]) {
+    effect_collection.dependent_state[dependent_state] =
+      effect_collection.dependent_state[dependent_state].filter(
+        (state) => state !== state_name
+      );
+  }
+  delete effect_collection.effects[state_name];
+  effect_collection.resolved[state_name] = true;
 }
 
 export function getEffects() {

@@ -26,10 +26,17 @@ export type useThis_this_instance = {
 export type useThis_instance_runnable<DefaultValue> = {
   (): useThisReturnType<DefaultValue>;
   this: string;
+  type: DefaultValue;
+  use: useThisReturnType<DefaultValue>;
 };
 export type useThis_Instance<DefaultValue> = {
   onEffect: (
-    resolver: (props: { state: object; resolver: Function }) => unknown,
+    resolver: (props: {
+      state: <K extends { this: string; type: unknown }>(
+        state_instance: K
+      ) => K["type"];
+      resolver: Function;
+    }) => unknown,
     dependent_states: (string | useThis_instance_runnable<any>)[]
   ) => useThis_Instance<DefaultValue>;
   setConfig: (
@@ -63,7 +70,11 @@ export type useThisReturnType<T> = {
 };
 export type useThisInstanceType<T> = useThisReturnType<T> & {
   effect: (
-    resolver: (props: { state: object; resolver: Function }) => unknown,
+    resolver: (props: {
+      state: () => object;
+      thisState: object;
+      resolver: Function;
+    }) => unknown,
     dependent_states: string[]
   ) => useThisReturnType<T>;
 };

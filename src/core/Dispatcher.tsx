@@ -1,10 +1,9 @@
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
-import { useThisInstanceType } from "../useThis/useThisTypes";
 import { useThisReturnType } from "../useThis/useThisTypes";
 import { executeEffects, getEffects } from "./managers/EffectManager";
 import { FunctionManager } from "./managers/FunctionManager";
-import { Appender, EffectReducer, Updater, Upsert } from "./Reducers";
+import { Appender, Updater, Upsert } from "./Reducers";
 
 export const useThisDispatcher = (StateName: string, defaultValue: any) => {
   const redux_dispatcher = _MAINSTORE.dispatch;
@@ -96,10 +95,5 @@ export const useThisInstanceDispatcher = (StateName: string) => {
 
   return {
     ...useThisReturn,
-    effect: EffectReducer(
-      requestedStateName,
-      dispatcher,
-      useThisReturn
-    ) as unknown as useThisInstanceType<StoreState["This"]>["effect"],
   } as useThisReturnType<StoreState["This"]>;
 };

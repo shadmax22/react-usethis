@@ -39,6 +39,18 @@ describe("App", () => {
       "Denver"
     );
   });
+  it("useThis Upsert Nested object", () => {
+    render(
+      <App>
+        <CoreBody></CoreBody>
+      </App>
+    );
+    fireEvent.click(screen.getByTestId("upsert-nested_object"));
+
+    expect(screen.getByTestId("upsert-nested_object-output").innerHTML).toBe(
+      "JOHN123"
+    );
+  });
 
   it("useThis Update", () => {
     render(

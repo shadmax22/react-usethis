@@ -11,6 +11,9 @@ type main_schema = {
   fun?: () => void;
   upsertAt?: string;
   upsertAtFun?: () => {};
+  data?: {
+    user_id?: string;
+  };
 };
 export default function CoreView() {
   let state = useThis<main_schema>("test_state", { name: "John" });
@@ -163,6 +166,24 @@ export default function CoreView() {
         onClick={state.fetch()?.upsertAtFun}
       >
         upsert-atFun Setter Runner CLICK ME
+      </button>
+
+      <h1 data-testid={"upsert-nested_object-output"}>
+        {state.get().data?.user_id ?? "NA"}
+      </h1>
+      <button
+        data-testid={"upsert-nested_object"}
+        onClick={() => {
+          let x = useThis<main_schema>("test_state");
+
+          x.upsert({
+            data: {
+              user_id: set("JOHN123"),
+            },
+          });
+        }}
+      >
+        Nested object update
       </button>
     </>
   );

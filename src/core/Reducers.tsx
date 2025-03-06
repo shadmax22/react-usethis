@@ -1,9 +1,7 @@
 import { upsert as up } from "js-upsert";
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
-import { useThisInstanceType } from "../useThis/useThisTypes";
 import { useThisReturnType } from "../useThis/useThisTypes";
-import { registerEffect } from "./managers/EffectManager";
 import { FunctionManager } from "./managers/FunctionManager";
 
 /*
@@ -53,17 +51,17 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
 
   function updater(data: any) {
     try {
-      const haystack = Array.isArray(main_state)
-        ? [...main_state]
-        : { ...((main_state ?? {}) as object) };
       dispatcher(
         StateHandler.upsert({
-          data: up(haystack, data),
+          data,
+          type: "general",
           active_state: StateName,
           config: {},
         })
       );
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   const upsert = (
@@ -76,24 +74,17 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
   };
 
   upsert.at = (...keys: [...(string | number)[], unknown]) => {
-    const haystack = Array.isArray(main_state)
-      ? [...main_state]
-      : { ...((main_state ?? {}) as object) };
-
     dispatcher(
       StateHandler.upsert({
-        data: up(haystack).at(...keys),
+        data: keys,
         active_state: StateName,
         config: {},
+        type: "at",
       })
     );
     return _MAINSTORE.getState().This[StateName];
   };
   upsert.funAt = (...keys: [...(string | number)[], void]) => {
-    const haystack = Array.isArray(main_state)
-      ? [...main_state]
-      : { ...((main_state ?? {}) as object) };
-
     const value = FunctionManager.store(keys[keys.length - 1]);
 
     keys.pop();
@@ -101,49 +92,14 @@ export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
     const new_at_path = [...keys, value];
     dispatcher(
       StateHandler.upsert({
-        data: up(haystack).at(
-          ...(new_at_path as [...(string | number)[], void])
-        ),
+        data: new_at_path,
         active_state: StateName,
         config: {},
+        type: "at",
       })
     );
     return _MAINSTORE.getState().This[StateName];
   };
 
   return upsert;
-}
-
-// EffectReducer is getting dispatched here
-export function EffectReducer(
-  StateName: keyof StoreState["This"],
-  dispatcher: any,
-  useThisReturn: any
-): useThisInstanceType<keyof StoreState["This"]>["effect"] {
-  const requestedStateName = StateName as keyof StoreState["This"];
-
-  // usersEffectFun & dependent_states will be provided by user
-  return (usersEffectFun, dependent_states) => {
-    registerEffect({
-      state_name: requestedStateName,
-      dependent_state_names: dependent_states ?? [],
-
-      // Effect is stored in effect_collection.effects.{process_id}
-
-      effect: (effectResolver: Function) =>
-        usersEffectFun({
-          state: _MAINSTORE.getState().This,
-          resolver: () => {
-            dispatcher(
-              StateHandler.removeState({
-                active_state: StateName,
-              })
-            );
-            effectResolver();
-          },
-        }),
-    });
-
-    return useThisReturn;
-  };
 }
