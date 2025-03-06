@@ -1,7 +1,7 @@
 {
   "name": "react-usethis",
   "version": "0.1.6",
-  "description": "Redux state management utilty",
+  "description": "Optimized Redux state management utilty",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/shadmax22/react-usethis.git"
