@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./units/App.jsx";
-import CoreView from "./units/instance/effect/effect.view.tsx";
+import CoreView from "./units/instance/static/static.view.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

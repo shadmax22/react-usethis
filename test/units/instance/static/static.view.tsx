@@ -22,6 +22,18 @@ export default function MainBody() {
         >
           UPSERT VALUE
         </button>
+        <button
+          data-testid={"upserter-2"}
+          onClick={() => {
+            MAIN_STATE.use.upsert.at("name", (pv) => {
+              return pv;
+            });
+
+            setState(MAIN_STATE.use.get());
+          }}
+        >
+          UPSERT VALUE
+        </button>
       </div>
 
       <div className="result">
