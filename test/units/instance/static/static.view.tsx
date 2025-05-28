@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { set } from "../../../../src/core/setter/set";
 import { MAIN_STATE } from "./static.state";
-import { set } from "../../../../src/setters/set";
 
 export default function MainBody() {
   const [state, setState] = useState<any>(MAIN_STATE.use.get());

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { set } from "../../../src/setters/set";
 import { main_state } from "./main_state";
+import { set } from "../../../exports";
 
 export default function InstanceView() {
   let state = main_state();

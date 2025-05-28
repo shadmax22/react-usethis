@@ -1,11 +1,8 @@
 import { useSelector } from "react-redux";
-import {
-  useThisDispatcher,
-  useThisInstanceDispatcher,
-} from "../core/Dispatcher";
-import { registerEffect } from "../core/managers/EffectManager";
-import { StateHandler } from "../redux/slices/StateReducer";
-import _MAINSTORE, { StoreState } from "../redux/store";
+import { useThisDispatcher, useThisInstanceDispatcher } from "../Dispatcher";
+import { registerEffect } from "../managers/EffectManager";
+import { StateHandler } from "../../redux/slices/StateReducer";
+import _MAINSTORE, { StoreState } from "../../redux/store";
 import {
   useThis_this_instance,
   useThisInstanceType,

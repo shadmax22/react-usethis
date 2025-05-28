@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useThisDispatcher } from "../core/Dispatcher";
+import { useThisDispatcher } from "../Dispatcher";
 import { useThisInstanceReturn } from "./useThisInstance";
 import { useThisReturnType, useThisType } from "./useThisTypes";
 

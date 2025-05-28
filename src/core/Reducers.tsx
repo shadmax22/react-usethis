@@ -1,6 +1,6 @@
 import { StateHandler } from "../redux/slices/StateReducer";
 import _MAINSTORE, { StoreState } from "../redux/store";
-import { useThisReturnType } from "../useThis/useThisTypes";
+import { useThisReturnType } from "./useThis/useThisTypes";
 import { FunctionManager } from "./managers/FunctionManager";
 
 /*

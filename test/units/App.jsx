@@ -1,9 +1,5 @@
-import { ThisProvider } from "../../src/thisProvider/index.ts";
+import { ThisProvider } from "../../exports/thisProvider.ts";
 
-export function App({children}) {
-  return (
-    <ThisProvider  >
-      {children}
-    </ThisProvider>
-  );
+export function App({ children }) {
+  return <ThisProvider>{children}</ThisProvider>;
 }

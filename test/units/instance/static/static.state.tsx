@@ -1,4 +1,4 @@
-import { useThis } from "../../../../src/useThis/useThis";
+import { useThis } from "../../../../src/core/useThis/useThis";
 
 export const MAIN_STATE = new useThis()
   .default({

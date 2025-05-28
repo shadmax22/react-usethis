@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { setFun, useThis } from "../../../index";
-import { set } from "../../../index";
+import { setFun, useThis } from "../../../exports/index";
+import { set } from "../../../exports/index";
 import React from "react";
 
 type main_schema = {

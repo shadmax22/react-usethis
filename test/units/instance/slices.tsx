@@ -1,4 +1,4 @@
-import { useThis } from "../../../src/useThis/useThis";
+import { useThis } from "../../../exports";
 
 export const MainState = new useThis()
   .default({ route: "home" })

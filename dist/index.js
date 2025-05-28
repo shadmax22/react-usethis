@@ -1,22 +1,23 @@
-import { c as p, S as o, _ as a, u as l } from "./store-ChqbPtdO.js";
+import { c as p, S as f, _ as a, u as l } from "./ThisProvider-DQlPpi9N.js";
+import { T as B } from "./ThisProvider-DQlPpi9N.js";
 const h = {};
-let E = 0, f = {
+let E = 0, o = {
   collection: {}
 };
-f.collection.store = (e) => {
+o.collection.store = (e) => {
   const t = `__func_${E++}__`;
   return h[t] = e, t;
 };
-f.collection.retrive = (e) => h[e];
-f.collection.get = () => h;
-f.store = (e) => typeof e == "function" ? f.collection.store(e) : Array.isArray(e) ? e.map(f.store) : e !== null && typeof e == "object" ? Object.keys(e).reduce((t, n) => (t[n] = f.store(e[n]), t), {}) : e;
-f.fetch = (e) => typeof e == "string" && e.startsWith("__func_") && e.endsWith("__") ? f.collection.retrive(e) : Array.isArray(e) ? e.map(f.fetch) : e !== null && typeof e == "object" ? Object.keys(e).reduce((t, n) => (t[n] = f.fetch(e[n]), t), {}) : e;
-function D(e) {
-  return p(() => f.store(e));
+o.collection.retrive = (e) => h[e];
+o.collection.get = () => h;
+o.store = (e) => typeof e == "function" ? o.collection.store(e) : Array.isArray(e) ? e.map(o.store) : e !== null && typeof e == "object" ? Object.keys(e).reduce((t, n) => (t[n] = o.store(e[n]), t), {}) : e;
+o.fetch = (e) => typeof e == "string" && e.startsWith("__func_") && e.endsWith("__") ? o.collection.retrive(e) : Array.isArray(e) ? e.map(o.fetch) : e !== null && typeof e == "object" ? Object.keys(e).reduce((t, n) => (t[n] = o.fetch(e[n]), t), {}) : e;
+function m(e) {
+  return p(() => o.store(e));
 }
-const m = p;
-m.fun = D;
-const i = {
+const D = p;
+D.fun = m;
+const c = {
   dependent_state: {},
   effects: {},
   registeredStates: {},
@@ -31,32 +32,32 @@ function I(e) {
     throw TypeError(
       "Second parameter of effect `dependent_states` must be a non-empty array."
     );
-  if ((u = i.registeredStates) != null && u[t]) return;
+  if ((u = c.registeredStates) != null && u[t]) return;
   const r = t;
-  i.registeredStates[t] = !0;
-  for (let c of s) {
-    if (typeof c == "function" && //@ts-ignore
-    (c != null && c["@___usethis"]) && (c != null && c.this) && (c = c.this), typeof c == "string")
-      (d = i.dependent_state) != null && d[c] ? i.dependent_state[c] = [
-        ...i.dependent_state[c],
+  c.registeredStates[t] = !0;
+  for (let i of s) {
+    if (typeof i == "function" && //@ts-ignore
+    (i != null && i["@___usethis"]) && (i != null && i.this) && (i = i.this), typeof i == "string")
+      (d = c.dependent_state) != null && d[i] ? c.dependent_state[i] = [
+        ...c.dependent_state[i],
         r
-      ] : i.dependent_state[c] = [r], i.registeredDependency[t] = [
-        ...i.registeredDependency[t] ?? [],
-        c
+      ] : c.dependent_state[i] = [r], c.registeredDependency[t] = [
+        ...c.registeredDependency[t] ?? [],
+        i
       ];
     else
       throw TypeError(
         "Invalid type passed on `dependent_states`, Only string and useThis instance supported "
       );
-    i.effects[r] = n;
+    c.effects[r] = n;
   }
 }
 function _(e) {
   var t;
-  if ((t = i.dependent_state) != null && t[e])
-    for (const n of i.dependent_state[e])
+  if ((t = c.dependent_state) != null && t[e])
+    for (const n of c.dependent_state[e])
       try {
-        i.effects[n](
+        c.effects[n](
           () => w({
             dependent_state_name: e,
             // State which is dependent to process_id
@@ -68,18 +69,18 @@ function _(e) {
 }
 function w(e) {
   const { dependent_state_name: t, state_name: n } = e;
-  i.dependent_state[t] = i.dependent_state[t].filter(
+  c.dependent_state[t] = c.dependent_state[t].filter(
     (s) => s !== n
-  ), delete i.effects[n], i.resolved[n] = !0;
+  ), delete c.effects[n], c.resolved[n] = !0;
 }
 function R() {
-  return i;
+  return c;
 }
 function g(e, t) {
   return function(s) {
     let r = typeof s == "function" ? s(a.getState().This[e]) : s;
     return t(
-      o.update({
+      f.update({
         data: r,
         state: e
       })
@@ -90,7 +91,7 @@ function T(e, t) {
   return function(s) {
     let r = typeof s == "function" ? s(a.getState().This[e]) : s;
     return t(
-      o.append({
+      f.append({
         data: r,
         state: e
       })
@@ -101,7 +102,7 @@ function y(e, t) {
   function n(r) {
     try {
       t(
-        o.upsert({
+        f.upsert({
           data: r,
           type: "general",
           active_state: e,
@@ -118,18 +119,18 @@ function y(e, t) {
     return a.getState().This[e];
   };
   return s.at = (...r) => (t(
-    o.upsert({
+    f.upsert({
       data: r,
       active_state: e,
       config: {},
       type: "at"
     })
   ), a.getState().This[e]), s.funAt = (...r) => {
-    const u = f.store(r[r.length - 1]);
+    const u = o.store(r[r.length - 1]);
     r.pop();
     const d = [...r, u];
     return t(
-      o.upsert({
+      f.upsert({
         data: d,
         active_state: e,
         config: {},
@@ -138,14 +139,14 @@ function y(e, t) {
     ), a.getState().This[e];
   }, s;
 }
-const S = (e, t) => {
-  var c;
-  const n = a.dispatch, s = (v) => {
-    const A = n(v);
+const v = (e, t) => {
+  var i;
+  const n = a.dispatch, s = (S) => {
+    const A = n(S);
     return _(e), A;
   }, r = e;
-  return !((c = a.getState()) == null ? void 0 : c.This)[r] && t && !R().resolved[r] && s(
-    o.update({
+  return !((i = a.getState()) == null ? void 0 : i.This)[r] && t && !R().resolved[r] && s(
+    f.update({
       data: t,
       state: r
     })
@@ -165,11 +166,11 @@ const S = (e, t) => {
     dispatcher: s,
     This: a.getState().This[r],
     get: () => a.getState().This[r],
-    fetch: () => f.fetch(
+    fetch: () => o.fetch(
       a.getState().This[r]
     )
   };
-}, M = (e) => {
+}, x = (e) => {
   const t = a.dispatch, n = (u) => {
     const d = t(u);
     return _(e), d;
@@ -191,13 +192,13 @@ const S = (e, t) => {
       dispatcher: n,
       This: a.getState().This[s],
       get: () => a.getState().This[s],
-      fetch: () => f.fetch(
+      fetch: () => o.fetch(
         a.getState().This[s]
       )
     }
   };
 };
-function x(e) {
+function M(e) {
   const t = {
     created: !1,
     stateName: "state_" + Math.floor(1e5 + Math.random() * 9e5)
@@ -208,13 +209,13 @@ function x(e) {
       throw Error("Cannot use useThis Instance without created");
     return F(t.stateName);
   };
-  return n["@___usethis"] = "0.1.6", n.this = t.stateName, n.onEffect = (s, r) => (t.onEffect = {
+  return n["@___usethis"] = "0.1.682", n.this = t.stateName, n.onEffect = (s, r) => (t.onEffect = {
     resolver: s,
     dependent_states: r
   }, n), n.stateName = (s) => (t.stateName = s, n), n.default = (s) => (t.defaultData = s, n), n.setConfig = (s, r) => (t[s] = r, n), n.use = {}, n.create = () => {
     if (!t.created)
       return n.this = t.stateName, t.defaultData && a.dispatch(
-        o.update({
+        f.update({
           data: t.defaultData,
           state: t.stateName
         })
@@ -229,7 +230,7 @@ function x(e) {
             state: (u) => typeof u == "function" && u["@___usethis"] ? a.getState().This[u.this] : a.getState().This[u],
             resolver: () => {
               a.dispatch(
-                o.removeState({
+                f.removeState({
                   active_state: t.stateName
                 })
               ), s();
@@ -237,7 +238,7 @@ function x(e) {
           });
         }
       }), t.created = !0, n.use = {
-        ...S(
+        ...v(
           t.stateName,
           t.defaultData
         )
@@ -252,7 +253,7 @@ function F(e) {
     });
   } catch {
   }
-  return M(
+  return x(
     e
   );
 }
@@ -264,18 +265,19 @@ function O(e, t) {
     });
   } catch {
   }
-  return S(
+  return v(
     e,
     t
   );
 }
 function C(e, t) {
-  return new.target ? x(e) : O(e, t);
+  return new.target ? M(e) : O(e, t);
 }
-const U = C;
+const P = C;
 export {
-  m as set,
-  D as setFun,
-  U as useThis
+  B as ThisProvider,
+  D as set,
+  m as setFun,
+  P as useThis
 };
 //# sourceMappingURL=index.js.map

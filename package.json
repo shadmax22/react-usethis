@@ -1,6 +1,6 @@
 {
   "name": "react-usethis",
-  "version": "0.1.65",
+  "version": "0.1.684",
   "description": "Optimized Redux state management utilty",
   "repository": {
     "type": "git",
@@ -18,17 +18,17 @@
   "type": "module",
   "module": "dist/index.js",
   "main": "dist/index.cjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/exports/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/exports/index.d.ts"
     },
     "./thisProvider": {
       "import": "./dist/thisProvider.js",
       "require": "./dist/thisProvider.umd.cjs",
-      "types": "./dist/src/thisProvider/index.d.ts"
+      "types": "./dist/exports/thisProvider.d.ts"
     }
   },
   "scripts": {
@@ -41,8 +41,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
     "js-upsert": "^0.2.51",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+  
     "react-redux": "^9.1.0",
     "vite-plugin-dts": "^3.8.1"
   },
@@ -50,8 +49,8 @@
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
-    "@types/react": "^18.3.14",
-    "@types/react-dom": "^18.3.2",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
