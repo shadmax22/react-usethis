@@ -209,7 +209,7 @@ function M(e) {
       throw Error("Cannot use useThis Instance without created");
     return F(t.stateName);
   };
-  return n["@___usethis"] = "0.1.682", n.this = t.stateName, n.onEffect = (s, r) => (t.onEffect = {
+  return n["@___usethis"] = "0.1.684", n.this = t.stateName, n.onEffect = (s, r) => (t.onEffect = {
     resolver: s,
     dependent_states: r
   }, n), n.stateName = (s) => (t.stateName = s, n), n.default = (s) => (t.defaultData = s, n), n.setConfig = (s, r) => (t[s] = r, n), n.use = {}, n.create = () => {
