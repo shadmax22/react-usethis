@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import packageJson from "./package.json";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,7 +13,7 @@ export default defineConfig({
     react(),
     dts({
       // plugin options
-      include: ["**/*.ts"], // Paths to include
+      include: ["**/*.ts", "**/*.tsx"], // Paths to include
       exclude: ["**/*.spec.ts"], // Paths to exclude
       outDir: "dist", // Output directory for declaration files
     }),
@@ -27,7 +28,7 @@ export default defineConfig({
     },
     rollupOptions: {
       // Make sure to externalize React and ReactDOM
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "reactRedux"],
       output: {
         globals: {
           react: "React",
@@ -47,5 +48,6 @@ export default defineConfig({
     globals: true,
 
     setupFiles: "./test/setup.js",
+    exclude: ["test/env/**", "node_modules/**", "dist/**"],
   },
 });

@@ -1,22 +1,23 @@
-import { c as p, S as f, _ as a, u as l } from "./ThisProvider-DQlPpi9N.js";
-import { T as B } from "./ThisProvider-DQlPpi9N.js";
+import { c as p, S as f, _ as a, u as l } from "./ThisProvider-DURF1TaG.js";
+import { T as H } from "./ThisProvider-DURF1TaG.js";
+import "react";
 const h = {};
-let E = 0, o = {
+let A = 0, o = {
   collection: {}
 };
 o.collection.store = (e) => {
-  const t = `__func_${E++}__`;
+  const t = `__func_${A++}__`;
   return h[t] = e, t;
 };
 o.collection.retrive = (e) => h[e];
 o.collection.get = () => h;
 o.store = (e) => typeof e == "function" ? o.collection.store(e) : Array.isArray(e) ? e.map(o.store) : e !== null && typeof e == "object" ? Object.keys(e).reduce((t, n) => (t[n] = o.store(e[n]), t), {}) : e;
 o.fetch = (e) => typeof e == "string" && e.startsWith("__func_") && e.endsWith("__") ? o.collection.retrive(e) : Array.isArray(e) ? e.map(o.fetch) : e !== null && typeof e == "object" ? Object.keys(e).reduce((t, n) => (t[n] = o.fetch(e[n]), t), {}) : e;
-function m(e) {
+function E(e) {
   return p(() => o.store(e));
 }
 const D = p;
-D.fun = m;
+D.fun = E;
 const c = {
   dependent_state: {},
   effects: {},
@@ -142,8 +143,8 @@ function y(e, t) {
 const v = (e, t) => {
   var i;
   const n = a.dispatch, s = (S) => {
-    const A = n(S);
-    return _(e), A;
+    const m = n(S);
+    return _(e), m;
   }, r = e;
   return !((i = a.getState()) == null ? void 0 : i.This)[r] && t && !R().resolved[r] && s(
     f.update({
@@ -209,7 +210,7 @@ function M(e) {
       throw Error("Cannot use useThis Instance without created");
     return F(t.stateName);
   };
-  return n["@___usethis"] = "0.1.684", n.this = t.stateName, n.onEffect = (s, r) => (t.onEffect = {
+  return n["@___usethis"] = "0.1.6862", n.this = t.stateName, n.onEffect = (s, r) => (t.onEffect = {
     resolver: s,
     dependent_states: r
   }, n), n.stateName = (s) => (t.stateName = s, n), n.default = (s) => (t.defaultData = s, n), n.setConfig = (s, r) => (t[s] = r, n), n.use = {}, n.create = () => {
@@ -273,11 +274,11 @@ function O(e, t) {
 function C(e, t) {
   return new.target ? M(e) : O(e, t);
 }
-const P = C;
+const U = C;
 export {
-  B as ThisProvider,
+  H as ThisProvider,
   D as set,
-  m as setFun,
-  P as useThis
+  E as setFun,
+  U as useThis
 };
 //# sourceMappingURL=index.js.map
