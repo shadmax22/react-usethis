@@ -1,6 +1,6 @@
 {
   "name": "react-usethis",
-  "version": "0.1.6863",
+  "version": "0.1.6864",
   "description": "Optimized Redux state management utilty",
   "repository": {
     "type": "git",
@@ -45,9 +45,9 @@
     "vite-plugin-dts": "^3.8.1"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-redux": "^8.0.0"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "react-redux": ">=8.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.8",
