@@ -1,6 +1,6 @@
-import { c as p, S as f, _ as a, u as l } from "./ThisProvider-DURF1TaG.js";
-import { T as H } from "./ThisProvider-DURF1TaG.js";
-import "react";
+import { c as p, S as f, _ as a } from "./ThisProvider-CES4szY0.js";
+import { T as H } from "./ThisProvider-CES4szY0.js";
+import { useSelector as l } from "react-redux";
 const h = {};
 let A = 0, o = {
   collection: {}
@@ -210,7 +210,7 @@ function M(e) {
       throw Error("Cannot use useThis Instance without created");
     return F(t.stateName);
   };
-  return n["@___usethis"] = "0.1.6863", n.this = t.stateName, n.onEffect = (s, r) => (t.onEffect = {
+  return n["@___usethis"] = "0.1.6912", n.this = t.stateName, n.onEffect = (s, r) => (t.onEffect = {
     resolver: s,
     dependent_states: r
   }, n), n.stateName = (s) => (t.stateName = s, n), n.default = (s) => (t.defaultData = s, n), n.setConfig = (s, r) => (t[s] = r, n), n.use = {}, n.create = () => {

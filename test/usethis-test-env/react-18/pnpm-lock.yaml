@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  react-usethis: link:../../../../../../../var/root/Library/pnpm/global/5/node_modules/react-usethis
+  react-usethis: link:../../../../../../AppData/Local/pnpm/global/5/node_modules/react-usethis
 
 importers:
 
@@ -18,8 +18,8 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
       react-usethis:
-        specifier: link:../../../../../../../var/root/Library/pnpm/global/5/node_modules/react-usethis
-        version: link:../../../../../../../var/root/Library/pnpm/global/5/node_modules/react-usethis
+        specifier: link:../../../../../../AppData/Local/pnpm/global/5/node_modules/react-usethis
+        version: link:../../../../../../AppData/Local/pnpm/global/5/node_modules/react-usethis
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.4.8

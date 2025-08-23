@@ -1,6 +1,6 @@
 {
   "name": "react-usethis",
-  "version": "0.1.6864",
+  "version": "0.1.6913",
   "description": "Optimized Redux state management utilty",
   "repository": {
     "type": "git",
@@ -33,11 +33,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "NODE_ENV=production tsc && vite build",
+    "build": "cross-env NODE_ENV=production tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "test:react18": "cd test/env/react-18 && pnpm install && pnpm link react-usethis && pnpm vitest"
+    "test:react18": "cd test/usethis-test-env/react-18 && pnpm install && pnpm link react-usethis && pnpm vitest"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
@@ -45,8 +45,8 @@
     "vite-plugin-dts": "^3.8.1"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0",
+    "react": ">=18.0.0 <20.0.0",
+    "react-dom": ">=18.0.0 <20.0.0",
     "react-redux": ">=8.0.0"
   },
   "devDependencies": {
@@ -59,6 +59,7 @@
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
     "babel-jest": "^29.7.0",
+    "cross-env": "^10.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
