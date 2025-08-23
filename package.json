@@ -36,8 +36,7 @@
     "build": "cross-env NODE_ENV=production tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest",
-    "test:react18": "cd test/usethis-test-env/react-18 && pnpm install && pnpm link react-usethis && pnpm vitest"
+    "test": "vitest"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
