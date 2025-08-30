@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { set } from "../../../../src/core/setter/set";
+import { set } from "../../../../src/core/set/Set";
 import { MAIN_STATE } from "./static.state";
 
 export default function MainBody() {

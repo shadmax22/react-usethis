@@ -1,13 +1,16 @@
 import { useSelector } from "react-redux";
-import { useThisDispatcher, useThisInstanceDispatcher } from "../Dispatcher";
-import { registerEffect } from "../managers/EffectManager";
-import { StateHandler } from "../../redux/slices/StateReducer";
-import _MAINSTORE, { StoreState } from "../../redux/store";
+import {
+  useThisDispatcher,
+  useThisInstanceDispatcher,
+} from "./UseThisDispatcher";
+import { registerEffect } from "./managers/EffectManager";
+import { StateHandler } from "../../shared/redux/slices/StateReducer";
+import _MAINSTORE, { StoreState } from "../../shared/redux/store";
 import {
   useThis_this_instance,
   useThisInstanceType,
   useThisReturnType,
-} from "./useThisTypes";
+} from "./UseThis.type";
 export function useThisInstanceReturn(prop1: unknown) {
   const instance_data: useThis_this_instance = {
     created: false,

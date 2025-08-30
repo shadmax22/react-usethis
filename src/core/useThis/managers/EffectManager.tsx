@@ -1,4 +1,4 @@
-import { useThis_Instance } from "../useThis/useThisTypes";
+import { useThis_Instance } from "../UseThis.type";
 
 /*
 

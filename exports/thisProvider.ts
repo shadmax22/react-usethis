@@ -1,1 +1,1 @@
-export { ThisProvider } from "../src/core/ThisProvider";
+export { ThisProvider } from "../src/core/thisProvider/ThisProvider";

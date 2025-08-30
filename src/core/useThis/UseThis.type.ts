@@ -12,7 +12,7 @@
 
 */
 
-import { set } from "../setter/set";
+import { set } from "../set/Set";
 
 type GetType<Value> = Value extends string
   ? string

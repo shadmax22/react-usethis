@@ -1,9 +1,9 @@
-import { StateHandler } from "../redux/slices/StateReducer";
-import _MAINSTORE, { StoreState } from "../redux/store";
-import { useThisReturnType } from "./useThis/useThisTypes";
+import { StateHandler } from "../../shared/redux/slices/StateReducer";
+import _MAINSTORE, { StoreState } from "../../shared/redux/store";
+import { useThisReturnType } from "./UseThis.type";
 import { executeEffects, getEffects } from "./managers/EffectManager";
 import { FunctionManager } from "./managers/FunctionManager";
-import { Appender, Updater, Upsert } from "./Reducers";
+import { Appender, Updater, Upsert } from "./UseThisReducer";
 
 export const useThisDispatcher = (StateName: string, defaultValue: any) => {
   const redux_dispatcher = _MAINSTORE.dispatch;
