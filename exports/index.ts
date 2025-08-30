@@ -1,6 +1,6 @@
 export { set } from "../src/core/set/Set";
 
-export { useThis } from "../src/core/useThis/UseThis";
+export { useThis } from "../src/core/useThis/UseThis_temp";
 
 export { setFun } from "../src/core/set/SetFun";
 
