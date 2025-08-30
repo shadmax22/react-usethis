@@ -1,7 +1,7 @@
 {
   "name": "react-usethis",
-  "version": "0.1.5",
-  "description": "Redux state management utilty",
+  "version": "0.1.6914",
+  "description": "Optimized Redux state management utilty",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/shadmax22/react-usethis.git"
@@ -18,44 +18,47 @@
   "type": "module",
   "module": "dist/index.js",
   "main": "dist/index.cjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/exports/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/exports/index.d.ts"
     },
     "./thisProvider": {
       "import": "./dist/thisProvider.js",
       "require": "./dist/thisProvider.umd.cjs",
-      "types": "./dist/src/thisProvider/index.d.ts"
+      "types": "./dist/exports/thisProvider.d.ts"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "cross-env NODE_ENV=production tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
-    "js-upsert": "^0.2.433",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^9.1.0",
+    "js-upsert": "^0.2.51",
     "vite-plugin-dts": "^3.8.1"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0 <20.0.0",
+    "react-dom": ">=18.0.0 <20.0.0",
+    "react-redux": ">=8.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
-    "@types/react": "^18.2.64",
-    "@types/react-dom": "^18.2.21",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
     "babel-jest": "^29.7.0",
+    "cross-env": "^10.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",

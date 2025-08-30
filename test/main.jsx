@@ -1,12 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ThisProvider } from "../src/thisProvider";
-import App from "./App";
+import { App } from "./units/App.jsx";
+import CoreView from "./units/instance/static/static.view.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThisProvider>
-      <App></App>
-    </ThisProvider>
+    <App children={<CoreView />}></App>
   </React.StrictMode>
 );
