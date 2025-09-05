@@ -33,9 +33,7 @@ export default function CoreView() {
         <button
           data-testid={"default-value-replacer"}
           onClick={() => {
-            state.upsert({
-              name: set("Max"),
-            });
+            state.upsert((pv) => (pv.name = "Max"));
           }}
         >
           default-value-replacer CLICK ME
@@ -43,13 +41,12 @@ export default function CoreView() {
         <button
           data-testid={"function-setter"}
           onClick={() => {
-            state.upsert({
-              fun: set.fun(() => {
-                state.upsert({
-                  name: set("Denver"),
-                });
-              }),
-            });
+            state.upsert(
+              (t) =>
+                (t.fun = set.fun(() => {
+                  state.upsert((t) => (t.name = "Denver"));
+                }))
+            );
           }}
         >
           function-setter CLICK ME
@@ -113,7 +110,9 @@ export default function CoreView() {
         onClick={() => {
           let x = useThis<main_schema>("test_state");
 
-          x.upsert({ utwp: set("John") });
+          x.upsert((t) => {
+            t.utwp = "John";
+          });
         }}
       >
         UTWP UPSERT
@@ -123,10 +122,12 @@ export default function CoreView() {
         onClick={() => {
           let x = useThis<main_schema>("test_state");
 
-          x.upsert({
-            utwpFun: set.fun(() => {
-              x.upsert({ utwp: set("Johnx") });
-            }),
+          x.upsert((t) => {
+            t.utwpFun = set.fun(() => {
+              x.upsert((t2) => {
+                t2.utwp = "Johnx";
+              });
+            });
           });
         }}
       >
@@ -176,10 +177,11 @@ export default function CoreView() {
         onClick={() => {
           let x = useThis<main_schema>("test_state");
 
-          x.upsert({
-            data: {
-              user_id: set("JOHN123"),
-            },
+          x.upsert((t) => {
+            if (!t.data) {
+              t.data = {};
+            }
+            t.data.user_id = "JOHN123";
           });
         }}
       >
@@ -219,10 +221,8 @@ function UseEffectDiff() {
     //   },
     // });
 
-    data.upsert({
-      val: {
-        val2: set("geeen"),
-      },
+    data.upsert((t) => {
+      t.val && (t.val.val2 = "green");
     });
 
     setRedered((r) => (r ?? 0) + 1);

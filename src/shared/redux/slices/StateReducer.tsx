@@ -26,22 +26,23 @@ export const StateReducer = createSlice({
         };
       }
     },
-    upsert: (state: any, action) => {
+    upsert: (existing_state: any, action) => {
       // index = greeen.k.someValue.value
       let { data, active_state, type } = action.payload;
 
-      if ((state[active_state] ?? null) === null) state[active_state] = {};
+      if ((existing_state[active_state] ?? null) === null)
+        existing_state[active_state] = {};
 
       // state[active_state] = data;
 
       if (type == "at") {
-        jsUpsert(state[active_state]).at(...data);
+        jsUpsert(existing_state[active_state]).at(...data);
       }
 
       if (type == "general") {
-        jsUpsert(state[active_state], data);
+        data(existing_state[active_state]);
       }
-      return state;
+      return existing_state;
     },
     removeState: (state: any, action) => {
       let { active_state } = action.payload;

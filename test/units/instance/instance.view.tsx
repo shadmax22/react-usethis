@@ -19,9 +19,7 @@ export default function InstanceView() {
         <button
           data-testid={"default-value-replacer"}
           onClick={() => {
-            state.upsert({
-              name: set("Max"),
-            });
+            state.upsert((pv) => (pv.name = "Max"));
           }}
         >
           default-value-replacer CLICK ME
@@ -29,13 +27,12 @@ export default function InstanceView() {
         <button
           data-testid={"function-setter"}
           onClick={() => {
-            state.upsert({
-              fun: set.fun(() => {
-                state.upsert({
-                  name: set("Denver"),
-                });
-              }),
-            });
+            state.upsert(
+              (t) =>
+                (t.fun = set.fun(() => {
+                  state.upsert((t) => (t.name = "Denver"));
+                }))
+            );
           }}
         >
           function-setter CLICK ME
@@ -99,7 +96,9 @@ export default function InstanceView() {
         onClick={() => {
           let x = main_state();
 
-          x.upsert({ utwp: set("John") });
+          x.upsert((t) => {
+            t.utwp = "John";
+          });
         }}
       >
         UTWP UPSERT
@@ -109,10 +108,12 @@ export default function InstanceView() {
         onClick={() => {
           let x = main_state();
 
-          x.upsert({
-            utwpFun: set.fun(() => {
-              x.upsert({ utwp: set("Johnx") });
-            }),
+          x.upsert((t) => {
+            t.utwpFun = set.fun(() => {
+              x.upsert((t2) => {
+                t2.utwp = "Johnx";
+              });
+            });
           });
         }}
       >
@@ -178,10 +179,9 @@ function UseEffectDiff() {
     //   },
     // });
 
-    data.upsert({
-      val: {
-        val2: set("geeen"),
-      },
+    data.upsert((t) => {
+      if (!t?.val) t.val = {};
+      t.val.val2 = "green";
     });
 
     setRedered((r) => (r ?? 0) + 1);

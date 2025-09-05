@@ -32,7 +32,7 @@ type InternalHookReturns<T> = T extends object
       | { [K in keyof T]: InternalHookReturns<T[K]> }
       | ReturnType<typeof set<GetType<T>>>
   : ReturnType<typeof set<GetType<T>>>;
-type typeParam_upsert<H> = InternalHookReturns<H>;
+export type UpsertType<H> = InternalHookReturns<H>;
 
 export type useThis_this_instance = {
   created: boolean;
@@ -83,7 +83,7 @@ export type useThisReturnType<T> = {
   update: (newState: ((previos_state: T) => T) | T) => T;
   append: (newState: ((previos_state: T) => Partial<T>) | Partial<T>) => T;
   upsert: {
-    (...partialState: typeParam_upsert<T>[]): T;
+    (update_fun: (param: T) => any): T; // simplified to shallow partial
     at: (...keys: [...(string | number)[], unknown]) => T;
     funAt: (...keys: [...(string | number)[], Function]) => T;
   };

@@ -13,9 +13,7 @@ export default function MainBody() {
         <button
           data-testid={"upserter"}
           onClick={() => {
-            MAIN_STATE.use.upsert({
-              name: set("Max"),
-            });
+            MAIN_STATE.use.upsert((pv) => (pv.name = "Max"));
 
             setState(MAIN_STATE.use.get());
           }}
@@ -25,9 +23,7 @@ export default function MainBody() {
         <button
           data-testid={"upserter-2"}
           onClick={() => {
-            MAIN_STATE.use.upsert.at("name", (pv) => {
-              return pv;
-            });
+            MAIN_STATE.use.upsert((p) => (p.name = p.name));
 
             setState(MAIN_STATE.use.get());
           }}

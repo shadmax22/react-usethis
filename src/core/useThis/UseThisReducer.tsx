@@ -46,27 +46,17 @@ export function Appender(
 }
 
 export function Upsert(StateName: keyof StoreState["This"], dispatcher: any) {
-  function updater(data: any) {
-    try {
-      dispatcher(
-        StateHandler.upsert({
-          data,
-          type: "general",
-          active_state: StateName,
-          config: {},
-        })
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   const upsert = (
-    ...data: any
+    data: any
   ): useThisReturnType<keyof StoreState["This"]>["upsert"] => {
-    for (let i of data) {
-      updater(i);
-    }
+    dispatcher(
+      StateHandler.upsert({
+        data,
+        type: "general",
+        active_state: StateName,
+        config: {},
+      })
+    );
     return _MAINSTORE.getState().This[StateName];
   };
 
